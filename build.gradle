@@ -12,8 +12,6 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
-
     }
 }
 
@@ -45,10 +43,10 @@ project(":desktop") {
 
 
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        compile 'org.jetbrains:annotations:16.0.3'
+        implementation project(":core")
+        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        implementation 'org.jetbrains:annotations:16.0.3'
     }
 }
 
@@ -58,7 +56,7 @@ project(":android") {
     configurations { natives }
     
     dependencies {
-        compile project(":core")
+        implementation project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
@@ -74,7 +72,7 @@ project(":core") {
 
 
     dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
 
     }
 }

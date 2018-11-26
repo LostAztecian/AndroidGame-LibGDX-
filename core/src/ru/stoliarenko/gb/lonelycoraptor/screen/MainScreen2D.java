@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -24,13 +25,11 @@ import ru.stoliarenko.gb.lonelycoraptor.objects.ships.Corruptor;
  * @author Stoliarenko Alexander
  */
 public final class MainScreen2D extends BaseScreen2D {
-    public static int currentWidth = 1024;
-    public static int currentHeight = 512;
 
     private Texture wallPaper;
     private TextureRegion wall;
 
-    private static final Queue<SpaceObject> spaceObjects = new ConcurrentLinkedQueue<>();
+    private static Queue<SpaceObject> spaceObjects = new ConcurrentLinkedQueue<>();
 
     public static void addSpaceObject(@NotNull final SpaceObject object){
         spaceObjects.add(object);
@@ -46,20 +45,39 @@ public final class MainScreen2D extends BaseScreen2D {
 
     @Override
     public void render(float delta) {
-        spaceObjects.stream().filter(SpaceObject::isExpired).forEach(spaceObjects::remove);
         super.render(delta);
+        removeExpired();
         float dt = Gdx.graphics.getDeltaTime();
         update(dt);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.draw(wall, 0, 0);
-        spaceObjects.forEach(o -> o.draw(batch));
+        drawAll();
         batch.end();
     }
 
+    /**
+     * RIP lambdas and stream API
+     */
     public void update(float dt) {
-        spaceObjects.forEach(o -> o.move(dt));
+        for (SpaceObject object : spaceObjects) {
+            object.move(dt);
+        }
+    }
+
+    public void drawAll() {
+        for (SpaceObject object : spaceObjects) {
+            object.draw(batch);
+        }
+    }
+
+    public void removeExpired(){
+        Iterator<SpaceObject> iterator = spaceObjects.iterator();
+        while (iterator.hasNext()) {
+            SpaceObject o = iterator.next();
+            if (o.isExpired()) iterator.remove();
+        }
     }
 
     @Override
@@ -94,7 +112,7 @@ public final class MainScreen2D extends BaseScreen2D {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         super.touchDown(screenX, screenY, pointer, button);
-        Corruptor.getCorruptor().shoot(screenX, currentHeight - screenY);
+        Corruptor.getCorruptor().shoot(screenX, Gdx.graphics.getHeight() - screenY);
         return false;
     }
 

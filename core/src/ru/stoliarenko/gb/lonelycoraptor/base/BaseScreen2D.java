@@ -27,8 +27,6 @@ public abstract class BaseScreen2D implements Screen, InputProcessor {
     @Override
     public void resize(int width, int height) {
         System.out.println(String.format(Locale.getDefault(),"Resize to %dx%d", width, height));
-        MainScreen2D.currentWidth = width;
-        MainScreen2D.currentHeight = height;
     }
 
     @Override
