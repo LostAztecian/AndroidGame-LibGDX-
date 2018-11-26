@@ -6,12 +6,13 @@ buildscript {
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://repository.jboss.org/nexus/content/repositories/thirdparty-releases" }
         jcenter()
         google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
-        
+        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
 
     }
 }
@@ -47,7 +48,7 @@ project(":desktop") {
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        
+        compile 'org.jetbrains:annotations:16.0.3'
     }
 }
 
