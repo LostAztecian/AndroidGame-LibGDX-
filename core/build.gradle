@@ -5,6 +5,3 @@ sourceSets.main.java.srcDirs = ["src/"]
 eclipse.project {
     name = appName + "-core"
 }
-dependencies {
-    implementation files('H:/AndroidTasks/LonelyCoraptor/lib/annotations-13.0.jar')
-}
