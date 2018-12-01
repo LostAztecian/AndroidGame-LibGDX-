@@ -4,14 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix3;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.Locale;
 
-import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
+import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 
 public abstract class BaseScreen2D implements Screen, InputProcessor {
 
     protected SpriteBatch batch;
+    protected Vector2 touch = new Vector2();
+    protected Matrix4 myScreenToGL = new Matrix4();
+    protected Matrix3 currentScreenToMyScreen = new Matrix3();
 
     @Override
     public void show() {
@@ -26,6 +32,11 @@ public abstract class BaseScreen2D implements Screen, InputProcessor {
 
     @Override
     public void resize(int width, int height) {
+        ScreenParameters.currentScreen.setWidthAndHeight(width, height);
+        ScreenParameters.myScreen.setHeightAndRatio(ScreenParameters.myScreen.getHeight(),  ScreenParameters.currentScreen.getRatio());
+        ScreenParameters.calculateTranslationMatrix4(myScreenToGL, ScreenParameters.myScreen, ScreenParameters.GLScreen);
+        batch.setProjectionMatrix(myScreenToGL);
+        ScreenParameters.calculateTranslationMatrix3(currentScreenToMyScreen, ScreenParameters.currentScreen, ScreenParameters.myScreen);
         System.out.println(String.format(Locale.getDefault(),"Resize to %dx%d", width, height));
     }
 

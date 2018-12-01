@@ -7,13 +7,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Iterator;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import ru.stoliarenko.gb.lonelycoraptor.base.BaseScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.base.SpaceObject;
+import ru.stoliarenko.gb.lonelycoraptor.objects.Background;
+import ru.stoliarenko.gb.lonelycoraptor.objects.consumables.Coin;
 import ru.stoliarenko.gb.lonelycoraptor.objects.ships.Corruptor;
+import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 
 /**
  * Game main screen
@@ -26,10 +28,8 @@ import ru.stoliarenko.gb.lonelycoraptor.objects.ships.Corruptor;
  */
 public final class MainScreen2D extends BaseScreen2D {
 
-    private Texture wallPaper;
-    private TextureRegion wall;
-
-    private static Queue<SpaceObject> spaceObjects = new ConcurrentLinkedQueue<>();
+    private Background background;
+    private static List<SpaceObject> spaceObjects = new CopyOnWriteArrayList<>();
 
     public static void addSpaceObject(@NotNull final SpaceObject object){
         spaceObjects.add(object);
@@ -38,21 +38,21 @@ public final class MainScreen2D extends BaseScreen2D {
     @Override
     public void show() {
         super.show();
-        wallPaper = new Texture("wp_space.jpg");
-        wall = new TextureRegion(wallPaper, 0, 0, 2048, 1024);
+        background = new Background();
         spaceObjects.add(Corruptor.getCorruptor());
+        for (int i = 0; i < 5; i++) {
+            spaceObjects.add(new Coin());
+        }
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
         removeExpired();
-        float dt = Gdx.graphics.getDeltaTime();
-        update(dt);
+        update(delta);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(wall, 0, 0);
         drawAll();
         batch.end();
     }
@@ -60,30 +60,42 @@ public final class MainScreen2D extends BaseScreen2D {
     /**
      * RIP lambdas and stream API
      */
-    public void update(float dt) {
-        for (SpaceObject object : spaceObjects) {
-            object.move(dt);
+    private void update(float dt) {
+        background.update(dt);
+        for (int i = 0; i < spaceObjects.size(); i++) {
+            spaceObjects.get(i).move(dt);
+            checkCollisions();
         }
     }
 
-    public void drawAll() {
-        for (SpaceObject object : spaceObjects) {
-            object.draw(batch);
+    private void checkCollisions(){
+        for (int i = 0; i < spaceObjects.size(); i++) {
+            if (Corruptor.getCorruptor().checkCollision(spaceObjects.get(i))){
+                Corruptor.getCorruptor().collide(spaceObjects.get(i));
+            }
         }
     }
 
-    public void removeExpired(){
-        Iterator<SpaceObject> iterator = spaceObjects.iterator();
-        while (iterator.hasNext()) {
-            SpaceObject o = iterator.next();
-            if (o.isExpired()) iterator.remove();
+    private void drawAll() {
+        background.draw(batch);
+        for (int i = 0; i < spaceObjects.size(); i++) {
+            spaceObjects.get(i).draw(batch);
+        }
+    }
+
+    private void removeExpired(){
+        for (int i = 0; i < spaceObjects.size(); i++) {
+            if (spaceObjects.get(i).isExpired()) spaceObjects.remove(i);
         }
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        wallPaper.dispose();
+        background.dispose();
+        for (int i = 0; i < spaceObjects.size(); i++) {
+            spaceObjects.get(i).dispose();
+        }
     }
 
     @Override
@@ -112,7 +124,8 @@ public final class MainScreen2D extends BaseScreen2D {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         super.touchDown(screenX, screenY, pointer, button);
-        Corruptor.getCorruptor().shoot(screenX, Gdx.graphics.getHeight() - screenY);
+        currentScreenToMyScreen.getScale(touch).scl(screenX, screenY);
+        Corruptor.getCorruptor().shoot((int)touch.x, (int)ScreenParameters.myScreen.getHeight() - (int)touch.y);
         return false;
     }
 
