@@ -2,8 +2,8 @@ package ru.stoliarenko.gb.lonelycoraptor.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -13,8 +13,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import ru.stoliarenko.gb.lonelycoraptor.base.BaseScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.base.SpaceObject;
 import ru.stoliarenko.gb.lonelycoraptor.objects.Background;
-import ru.stoliarenko.gb.lonelycoraptor.objects.consumables.Coin;
-import ru.stoliarenko.gb.lonelycoraptor.objects.ships.Corruptor;
+import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.consumables.Coin;
+import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Corruptor;
+import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy;
+import ru.stoliarenko.gb.lonelycoraptor.utils.Atlases;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 
 /**
@@ -31,6 +33,10 @@ public final class MainScreen2D extends BaseScreen2D {
     private Background background;
     private static List<SpaceObject> spaceObjects = new CopyOnWriteArrayList<>();
 
+    public MainScreen2D(SpriteBatch batch) {
+        super(batch);
+    }
+
     public static void addSpaceObject(@NotNull final SpaceObject object){
         spaceObjects.add(object);
     }
@@ -38,11 +44,14 @@ public final class MainScreen2D extends BaseScreen2D {
     @Override
     public void show() {
         super.show();
-        background = new Background();
+        Atlases.space = new TextureAtlas("spaceObjects.pack");
+        Atlases.background = Atlases.space;
+        background = Background.getInstance();
         spaceObjects.add(Corruptor.getCorruptor());
         for (int i = 0; i < 5; i++) {
             spaceObjects.add(new Coin());
         }
+        spaceObjects.add(new SimpleEnemy());
     }
 
     @Override
@@ -64,15 +73,6 @@ public final class MainScreen2D extends BaseScreen2D {
         background.update(dt);
         for (int i = 0; i < spaceObjects.size(); i++) {
             spaceObjects.get(i).move(dt);
-            checkCollisions();
-        }
-    }
-
-    private void checkCollisions(){
-        for (int i = 0; i < spaceObjects.size(); i++) {
-            if (Corruptor.getCorruptor().checkCollision(spaceObjects.get(i))){
-                Corruptor.getCorruptor().collide(spaceObjects.get(i));
-            }
         }
     }
 
@@ -93,9 +93,7 @@ public final class MainScreen2D extends BaseScreen2D {
     public void dispose() {
         super.dispose();
         background.dispose();
-        for (int i = 0; i < spaceObjects.size(); i++) {
-            spaceObjects.get(i).dispose();
-        }
+        Atlases.disposeAll();
     }
 
     @Override

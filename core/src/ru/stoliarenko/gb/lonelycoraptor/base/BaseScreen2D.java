@@ -19,10 +19,14 @@ public abstract class BaseScreen2D implements Screen, InputProcessor {
     protected Matrix4 myScreenToGL = new Matrix4();
     protected Matrix3 currentScreenToMyScreen = new Matrix3();
 
+    public BaseScreen2D(SpriteBatch batch) {
+        this.batch = batch;
+    }
+
     @Override
     public void show() {
         System.out.println("Show");
-        batch = new SpriteBatch();
+//        batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
     }
 

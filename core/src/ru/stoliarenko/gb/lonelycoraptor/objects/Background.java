@@ -10,19 +10,27 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import ru.stoliarenko.gb.lonelycoraptor.base.BackgroundObject;
-import ru.stoliarenko.gb.lonelycoraptor.objects.BackgroundObjects.BackgroundStar;
+import ru.stoliarenko.gb.lonelycoraptor.objects.background_objects.BackgroundStar;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 
 public final class Background {
+
+    private static Background instance;
+
     private static Texture space_texture = new Texture("wp_space.jpg");
     private TextureRegion wallpaper = new TextureRegion(space_texture, (int)(1024 * ScreenParameters.myScreen.getRatio()), 1024);
 
     @NotNull private final List<BackgroundObject> backgroundObjects = new CopyOnWriteArrayList<>();
 
-    public Background() {
+    private Background() {
         for (int i = 0; i < 50; i++) {
             backgroundObjects.add(new BackgroundStar());
         }
+    }
+
+    public static Background getInstance(){
+        if (instance == null) instance = new Background();
+        return instance;
     }
 
     public void draw(@NotNull final SpriteBatch batch){

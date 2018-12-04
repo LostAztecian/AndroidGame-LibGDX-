@@ -1,11 +1,12 @@
 package ru.stoliarenko.gb.lonelycoraptor.base;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
+
+import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
+import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 /**
  * Everything drawable
@@ -20,29 +21,24 @@ public abstract class SpaceObject {
         BACKGROUND;
     }
 
-    protected static final Texture texturePack = null;
-
     private Type type;
     private boolean expired = false;
     protected boolean visible = false;
 
-    @NotNull protected TextureRegion texture;
+    @NotNull public final Sprite img;
     protected int WIDTH;
     protected int HEIGHT;
-    protected float radius;
 
     @NotNull protected Vector2 position = new Vector2();
     @NotNull protected Vector2 velocity = new Vector2();
     protected float angle = 0;
     protected float scale = 1.0f;
-    protected float scaleRate = 1.0f;
 
-    protected SpaceObject(@NotNull final Type type, @NotNull final TextureRegion texture){
+    protected Vector2 temp = new Vector2();
+
+    protected SpaceObject(@NotNull final Type type, @NotNull final Sprite img){
         this.type = type;
-        this.texture = texture;
-        this.WIDTH = texture.getRegionWidth();
-        this.HEIGHT = texture.getRegionHeight();
-        this.radius = (float)Math.sqrt((WIDTH*WIDTH + HEIGHT*HEIGHT))/2;
+        this.img = img;
     }
 
     protected void expire(){
@@ -57,18 +53,30 @@ public abstract class SpaceObject {
         return this.type;
     }
 
-    public void draw(final @NotNull SpriteBatch batch) {
-        if (visible)
-            batch.draw(texture, position.x, position.y, WIDTH/2, HEIGHT/2, WIDTH, HEIGHT, scale*scaleRate, scale, angle);
+    public Vector2 getPosition() {
+        return position;
     }
+
+    public void draw(final @NotNull SpriteBatch batch) {
+        if (visible) {
+            img.drawAt(batch, position, angle);
+            drawUpgrades();
+        }
+    }
+
+    private void drawUpgrades(){}
+
     public abstract void move(float dt);
 
     public boolean checkCollision(SpaceObject that){
-        return (radius * scale + that.radius * that.scale)*0.65f > Vector2.dst(that.position.x + that.WIDTH/2, that.position.y + that.HEIGHT/2,
-                position.x + WIDTH/2, this.position.y + HEIGHT/2);
+        return (img.getRadius() + that.img.getRadius()) * 0.65 > position.dst(that.position);
     }
 
-    public void dispose(){
-//        texturePack.dispose();
+    protected boolean checkOuterSpace() {
+        if (position.x + img.getRightShift() < 0) return true;
+        if (position.x + img.getLeftShift() > ScreenParameters.myScreen.getWidth()) return true;
+        if (position.y + img.getTopShift() < 0) return true;
+        return position.y + img.getBottomShift() > ScreenParameters.myScreen.getHeight();
     }
+
 }
