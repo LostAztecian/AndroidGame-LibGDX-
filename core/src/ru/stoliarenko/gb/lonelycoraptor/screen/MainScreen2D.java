@@ -1,6 +1,7 @@
 package ru.stoliarenko.gb.lonelycoraptor.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -74,6 +75,8 @@ public final class MainScreen2D extends BaseScreen2D {
 
     private void update(float dt) {
         background.update(dt);
+        if (isPaused) return;
+
         Emitters.moveAll(dt);
         Corruptor.getCorruptor().setAcceleration(slider.getShift());
         for (int i = 0; i < spaceObjects.size(); i++) {
@@ -144,21 +147,26 @@ public final class MainScreen2D extends BaseScreen2D {
     public boolean keyDown(int keycode) {
         super.keyDown(keycode);
         switch (keycode) {
-            case 19: {
+            case Input.Keys.UP: {
                 Corruptor.getCorruptor().accelerateUp();
                 break;
             }
-            case 20: {
+            case Input.Keys.DOWN: {
                 Corruptor.getCorruptor().accelerateDown();
                 break;
             }
-            case 21: {
+            case Input.Keys.LEFT: {
                 Corruptor.getCorruptor().accelerateLeft();
                 break;
             }
-            case 22: {
+            case Input.Keys.RIGHT: {
                 Corruptor.getCorruptor().accelerateRight();
+                break;
             }
+            case Input.Keys.P: {
+                isPaused = !isPaused;
+            }
+
         }
         return false;
     }
@@ -167,19 +175,19 @@ public final class MainScreen2D extends BaseScreen2D {
     public boolean keyUp(int keycode) {
         super.keyUp(keycode);
         switch (keycode) {
-            case 19: {
+            case Input.Keys.UP: {
                 Corruptor.getCorruptor().accelerateDown();
                 break;
             }
-            case 20: {
+            case Input.Keys.DOWN: {
                 Corruptor.getCorruptor().accelerateUp();
                 break;
             }
-            case 21: {
+            case Input.Keys.LEFT: {
                 Corruptor.getCorruptor().accelerateRight();
                 break;
             }
-            case 22: {
+            case Input.Keys.RIGHT: {
                 Corruptor.getCorruptor().accelerateLeft();
             }
         }

@@ -20,6 +20,8 @@ public abstract class BaseScreen2D implements Screen, InputProcessor {
     protected Matrix4 myScreenToGL = new Matrix4();
     protected Matrix3 currentScreenToMyScreen = new Matrix3();
 
+    protected boolean isPaused;
+
     protected Music music;
 
     public BaseScreen2D(SpriteBatch batch) {
@@ -50,12 +52,14 @@ public abstract class BaseScreen2D implements Screen, InputProcessor {
     public void pause() {
         System.out.println("pause");
         if (music != null) music.stop();
+        isPaused = true;
     }
 
     @Override
     public void resume() {
         System.out.println("resume");
         if (music != null) music.play();
+        isPaused = false;
     }
 
     @Override

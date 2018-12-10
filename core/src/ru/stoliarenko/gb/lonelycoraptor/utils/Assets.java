@@ -85,4 +85,8 @@ public class Assets {
         assetManager.load("mainFont"+size+".ttf", BitmapFont.class, fontParameter);
     }
 
+    public void clear() {
+        assetManager.clear();
+    }
+
 }
