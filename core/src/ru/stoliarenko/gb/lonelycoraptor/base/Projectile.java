@@ -9,7 +9,7 @@ import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 /**
  * Short-living space objects, which may interact with {@code = Ship}
  */
-public abstract class Projectile extends SpaceObject{
+public abstract class Projectile extends SpaceObject implements Poolable{
 
     protected boolean isAllied = false; //TODO add friendly fire check
     protected float SPEED = 750f;
@@ -21,4 +21,13 @@ public abstract class Projectile extends SpaceObject{
 
     protected abstract void checkDestination();
 
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+
+    @Override
+    public void destroy() {
+        active = false;
+    }
 }

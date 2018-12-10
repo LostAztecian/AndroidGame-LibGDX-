@@ -4,18 +4,21 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
+import ru.stoliarenko.gb.lonelycoraptor.TestCorruptor;
 import ru.stoliarenko.gb.lonelycoraptor.base.Button;
-import ru.stoliarenko.gb.lonelycoraptor.utils.Atlases;
+import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 public final class ButtonNewGame extends Button {
 
-    public ButtonNewGame(@NotNull final Vector2 position) {
-        super(new Sprite(Atlases.foreground.findRegion("NewGame"), 1f), position);
+    public ButtonNewGame(@NotNull final TestCorruptor game, @NotNull final Vector2 position) {
+        super(game, new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("rectangleBrown"), 1f), position);
+        text = "New Game";
     }
 
     @Override
-    public void onClick() {
+    protected void onClick() {
+        game.newGame();
     }
 
 }

@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
-public abstract class Consumable extends SpaceObject {
+public abstract class Consumable extends SpaceObject implements Poolable {
 
     public enum Type{
         COIN,
@@ -22,6 +22,13 @@ public abstract class Consumable extends SpaceObject {
         return this.type;
     }
 
-    public abstract void destroy();
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+
+    public void destroy() {
+        active = false;
+    }
 
 }

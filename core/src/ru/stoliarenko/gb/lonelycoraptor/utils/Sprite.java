@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
+import lombok.Getter;
+
 public final class Sprite {
 
     private TextureRegion img;
@@ -15,7 +17,7 @@ public final class Sprite {
     private final float halfHeight;
     private final float radius;
     private final float baseScale;
-    private float scale;
+    @Getter private float scale;
 
     public Sprite(@NotNull final TextureRegion img, float baseScale) {
         this.img = img;

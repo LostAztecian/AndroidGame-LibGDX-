@@ -1,0 +1,12 @@
+
+background.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+backgroundStar
+  rotate: false
+  xy: 2, 2
+  size: 10, 9
+  orig: 10, 9
+  offset: 0, 0
+  index: -1

@@ -17,7 +17,7 @@ public final class Background {
 
     private static Background instance;
 
-    private static Texture space_texture = new Texture("wp_space.jpg");
+    private Texture space_texture = new Texture("wp_space.jpg"); //TODO or not todo - move to assets?
     private TextureRegion wallpaper = new TextureRegion(space_texture, (int)(1024 * ScreenParameters.myScreen.getRatio()), 1024);
 
     @NotNull private final List<BackgroundObject> backgroundObjects = new CopyOnWriteArrayList<>();

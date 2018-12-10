@@ -3,6 +3,7 @@ package ru.stoliarenko.gb.lonelycoraptor.base;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Matrix4;
@@ -19,6 +20,8 @@ public abstract class BaseScreen2D implements Screen, InputProcessor {
     protected Matrix4 myScreenToGL = new Matrix4();
     protected Matrix3 currentScreenToMyScreen = new Matrix3();
 
+    protected Music music;
+
     public BaseScreen2D(SpriteBatch batch) {
         this.batch = batch;
     }
@@ -26,7 +29,6 @@ public abstract class BaseScreen2D implements Screen, InputProcessor {
     @Override
     public void show() {
         System.out.println("Show");
-//        batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
     }
 
@@ -47,17 +49,19 @@ public abstract class BaseScreen2D implements Screen, InputProcessor {
     @Override
     public void pause() {
         System.out.println("pause");
+        if (music != null) music.stop();
     }
 
     @Override
     public void resume() {
         System.out.println("resume");
+        if (music != null) music.play();
     }
 
     @Override
     public void hide() {
         System.out.println("hide");
-        dispose();
+        pause();
     }
 
     @Override

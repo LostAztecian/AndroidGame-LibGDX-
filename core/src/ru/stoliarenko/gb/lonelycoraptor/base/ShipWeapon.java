@@ -4,7 +4,11 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
-public abstract class ShipWeapon {
+public abstract class ShipWeapon { //TODO ChargeableWeapon extends ShipWeapon
+
+    protected boolean isChargeable = false;
+    protected float charge = 0;
+    protected float chargeRate = 0;
 
     protected long lastShotTime = 0;
     protected float fireRate;
@@ -26,5 +30,9 @@ public abstract class ShipWeapon {
     protected boolean checkCooldown() {
         final long thisShotTime = System.currentTimeMillis();
         return (1000 / fireRate > thisShotTime - lastShotTime);
+    }
+
+    public void charge(float dCharge) {
+        if (isChargeable) charge += dCharge * chargeRate;
     }
 }

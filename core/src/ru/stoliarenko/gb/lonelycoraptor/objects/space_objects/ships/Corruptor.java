@@ -1,9 +1,11 @@
 package ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships;
 
-import org.jetbrains.annotations.Nullable;
+import com.badlogic.gdx.math.Vector2;
+
+import org.jetbrains.annotations.NotNull;
 
 import ru.stoliarenko.gb.lonelycoraptor.base.Ship;
-import ru.stoliarenko.gb.lonelycoraptor.utils.Atlases;
+import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
@@ -13,19 +15,21 @@ import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
  */
 public final class Corruptor extends Ship {
 
-
-    @Nullable private static Corruptor instance;
+    private static Corruptor instance;
 
     private int score = 0;
 
-    private float ACCELERATION = 300;
-    private float SPEED_DECAY = 1f;
+    private Vector2 sliderAcceleration = new Vector2(0, 0);
+    private float acceleration = 300;
+    private float speedDecay = 1f;
     private float horizontalAcceleration = 0;
     private float verticalAcceleration = 0;
 
+    private boolean isChargingWeapon = false;
+
 
     private Corruptor(int posX, int posY) {
-        super(new Sprite(Atlases.space.findRegion("corruptor"), 1f));
+        super(new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("corruptor"), 1f));
         position.set(posX, posY);
         visible = true;
     }
@@ -43,30 +47,41 @@ public final class Corruptor extends Ship {
     public void move(float dt){
         checkOuterSpace();
         position.mulAdd(velocity, dt);
-        if (velocity.len() >= ACCELERATION/60) rotateTo(velocity.angle(), dt);
+        if (velocity.len() >= acceleration /60) rotateTo(velocity.angle(), dt);
         accelerate(dt);
         slowDown(dt);
+        if (isChargingWeapon) chargeWeapon(dt);
     }
 
     private void accelerate(float dt){
+        if (!sliderAcceleration.isZero()) {
+            velocity.mulAdd(sliderAcceleration, acceleration*dt);
+            return;
+        }
         velocity.add(horizontalAcceleration*dt, verticalAcceleration*dt);
     }
 
+    /**
+     * Acceleration with slider or mouse
+     * @param acceleration maximum length is 1f;
+     */
+    public void setAcceleration(@NotNull final Vector2 acceleration) {
+        sliderAcceleration.set(acceleration);
+    }
+
     private void slowDown(float dt){
-        velocity.scl(1f - SPEED_DECAY*dt);
+        velocity.scl(1f - speedDecay *dt);
     }
 
     public void accelerateUp(){
-        verticalAcceleration += ACCELERATION;
+        verticalAcceleration += acceleration;
     }
-    public void accelerateDown(){
-        verticalAcceleration -= ACCELERATION;
-    }
+    public void accelerateDown(){ verticalAcceleration -= acceleration; }
     public void accelerateRight(){
-        horizontalAcceleration += ACCELERATION;
+        horizontalAcceleration += acceleration;
     }
     public void accelerateLeft(){
-        horizontalAcceleration -= ACCELERATION;
+        horizontalAcceleration -= acceleration;
     }
 
     @Override
@@ -79,8 +94,24 @@ public final class Corruptor extends Ship {
         return false;
     }
 
+    public float setWeaponCharging(boolean flag) {
+        isChargingWeapon = flag;
+        return 0; //TODO return total charge time
+    }
+
+    public void shoot() {
+        setWeaponCharging(false);
+        temp.set(1, 0).rotate(angle);
+        shoot(temp.x, temp.y);
+    }
+
     public void getScore(int score) {
         this.score += score; //TODO score multiplier?
+    }
+
+    @Override
+    protected void destroy() {
+        //TODO lifecount --
     }
 
 }

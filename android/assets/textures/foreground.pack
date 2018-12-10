@@ -1,0 +1,26 @@
+
+foreground.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+slider
+  rotate: false
+  xy: 2, 2
+  size: 200, 100
+  orig: 200, 100
+  offset: 0, 0
+  index: -1
+rectangleBrown
+  rotate: false
+  xy: 204, 2
+  size: 250, 64
+  orig: 250, 64
+  offset: 0, 0
+  index: -1
+squareBrown
+  rotate: false
+  xy: 456, 2
+  size: 60, 64
+  orig: 60, 64
+  offset: 0, 0
+  index: -1

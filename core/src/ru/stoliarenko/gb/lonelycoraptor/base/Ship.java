@@ -36,13 +36,19 @@ public abstract class Ship extends SpaceObject {
         position.add(velocity);
     }
 
-    public void shoot(int posX, int posY) {
+    public void shoot(float posX, float posY) {
         weapon.shoot(getPosition(), new Vector2(posX, posY));
     }
 
     public void takeDamage(float damage) {
         hp -= damage; //TODO add armor
-        if (hp < 0) expire(); //TODO main ship cant expire
+        if (hp < 0) destroy(); //TODO main ship cant expire
     }
+
+    protected void chargeWeapon(float dCharge) {
+        weapon.charge(dCharge);
+    }
+
+    protected abstract void destroy();
 
 }

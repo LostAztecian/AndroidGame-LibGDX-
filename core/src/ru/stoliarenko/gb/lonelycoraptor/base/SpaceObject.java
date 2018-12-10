@@ -18,14 +18,14 @@ public abstract class SpaceObject {
         PROJECTILE,
         EXPLOSION,
         CONSUMABLE,
-        BACKGROUND;
+        BACKGROUND
     }
 
     private Type type;
-    private boolean expired = false;
     protected boolean visible = false;
+    protected boolean active = false;
 
-    @NotNull public final Sprite img;
+    @NotNull protected final Sprite img;
     protected int WIDTH;
     protected int HEIGHT;
 
@@ -39,14 +39,6 @@ public abstract class SpaceObject {
     protected SpaceObject(@NotNull final Type type, @NotNull final Sprite img){
         this.type = type;
         this.img = img;
-    }
-
-    protected void expire(){
-        expired = true;
-    }
-
-    public boolean isExpired() {
-        return expired;
     }
 
     public Type getType(){
@@ -68,7 +60,7 @@ public abstract class SpaceObject {
 
     public abstract void move(float dt);
 
-    public boolean checkCollision(SpaceObject that){
+    protected boolean checkCollision(SpaceObject that){
         return (img.getRadius() + that.img.getRadius()) * 0.65 > position.dst(that.position);
     }
 

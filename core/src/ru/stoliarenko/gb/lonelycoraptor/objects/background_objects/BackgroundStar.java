@@ -3,14 +3,14 @@ package ru.stoliarenko.gb.lonelycoraptor.objects.background_objects;
 import com.badlogic.gdx.math.MathUtils;
 
 import ru.stoliarenko.gb.lonelycoraptor.base.BackgroundObject;
-import ru.stoliarenko.gb.lonelycoraptor.utils.Atlases;
+import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 public final class BackgroundStar extends BackgroundObject {
 
     public BackgroundStar() {
-        super(new Sprite(Atlases.background.findRegion("backgroundStar"), 0.35f));
+        super(new Sprite(Assets.getInstance().getBackgroundAtlas().findRegion("backgroundStar"), 0.35f));
         position.x = MathUtils.random(500f * ScreenParameters.myScreen.getRatio());
         position.y = MathUtils.random(500f);
         final float rnd = MathUtils.random(1f, 2f);
