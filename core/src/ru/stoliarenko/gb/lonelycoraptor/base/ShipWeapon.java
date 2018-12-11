@@ -4,35 +4,57 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
-public abstract class ShipWeapon { //TODO ChargeableWeapon extends ShipWeapon
+import lombok.Setter;
+import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
 
-    protected boolean isChargeable = false;
+public class ShipWeapon {
+
+    public enum Type {
+        LASER_CANNON_GREEN(false, 1f, Projectile.Type.LASER_BULLET_GREEN),
+        CORROSIVE_BILE_LAUNCHER(true, 1f, Projectile.Type.CORROSIVE_BILE);
+
+        private boolean isChargeable;
+        private float baseFirerate;
+        private Projectile.Type bulletType;
+
+        Type(boolean isChargeable, float baseFirerate, Projectile.Type bulletType) {
+            this.isChargeable = isChargeable;
+            this.baseFirerate = baseFirerate;
+            this.bulletType = bulletType;
+        }
+    }
+
+    private Type type;
+    protected MainScreen2D gs;
     protected float charge = 0;
-    protected float chargeRate = 0;
+
 
     protected long lastShotTime = 0;
-    protected float fireRate;
+    @Setter protected float fireRateScale;
 
-    protected ShipWeapon() {
-        this.fireRate = 1f;
+    public ShipWeapon(@NotNull final MainScreen2D gs, @NotNull final Type type) {
+        this.gs = gs;
+        this.type = type;
+        this.fireRateScale = 1f;
     }
 
-    protected ShipWeapon(float fireRate) {
-        this.fireRate = fireRate;
+    public void shoot(@NotNull final Vector2 currentPosition, @NotNull final Vector2 destinationPosition) {
+        if (checkCooldown()) return;
+        if (type.isChargeable) { destinationPosition.scl(50+250f*charge).add(currentPosition); }
+        lastShotTime = System.currentTimeMillis();
+        gs.getProjectileEmitter().spawn(type.bulletType, currentPosition, destinationPosition);
+        charge = 0;
     }
-
-    public void setFireRate(float fireRate) {
-        this.fireRate = fireRate;
-    }
-
-    public abstract void shoot(@NotNull final Vector2 currentPosition, @NotNull final Vector2 destinationPosition);
 
     protected boolean checkCooldown() {
         final long thisShotTime = System.currentTimeMillis();
-        return (1000 / fireRate > thisShotTime - lastShotTime);
+        return (1000 / fireRateScale > thisShotTime - lastShotTime);
     }
 
     public void charge(float dCharge) {
-        if (isChargeable) charge += dCharge * chargeRate;
+        float before = charge;
+        if (type.isChargeable) charge += dCharge * type.baseFirerate* fireRateScale;
+        float after = charge;
+        if (type.isChargeable) System.out.printf("Charging %f --> %f%n", before, after);
     }
 }

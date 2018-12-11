@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
+import lombok.Getter;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
@@ -22,10 +23,10 @@ public abstract class SpaceObject {
     }
 
     private Type type;
-    protected boolean visible = false;
-    protected boolean active = false;
+    @Getter protected boolean visible = false;
+    @Getter protected boolean active = false;
 
-    @NotNull protected final Sprite img;
+    @NotNull protected Sprite img;
     protected int WIDTH;
     protected int HEIGHT;
 
@@ -39,6 +40,10 @@ public abstract class SpaceObject {
     protected SpaceObject(@NotNull final Type type, @NotNull final Sprite img){
         this.type = type;
         this.img = img;
+    }
+
+    public void setImg(@NotNull final Sprite img) {
+        this.img = new Sprite(img);
     }
 
     public Type getType(){
@@ -65,10 +70,10 @@ public abstract class SpaceObject {
     }
 
     protected boolean checkOuterSpace() {
-        if (position.x + img.getRightShift() < 0) return true;
-        if (position.x + img.getLeftShift() > ScreenParameters.myScreen.getWidth()) return true;
-        if (position.y + img.getTopShift() < 0) return true;
-        return position.y + img.getBottomShift() > ScreenParameters.myScreen.getHeight();
+        if (position.x + img.getRightShift() < -1) return true;
+        if (position.x + img.getLeftShift() > ScreenParameters.myScreen.getWidth() +1) return true;
+        if (position.y + img.getTopShift() < -1) return true;
+        return position.y + img.getBottomShift() > ScreenParameters.myScreen.getHeight() +1;
     }
 
 }

@@ -3,30 +3,121 @@ spaceObjects.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-simpleEnemy
+simpleEnemyYellow
   rotate: false
   xy: 2, 2
   size: 148, 100
   orig: 148, 100
   offset: 0, 0
   index: -1
-coin
+simpleEnemyRegular
   rotate: false
   xy: 152, 2
+  size: 148, 100
+  orig: 148, 100
+  offset: 0, 0
+  index: -1
+simpleEnemyGreen
+  rotate: false
+  xy: 302, 2
+  size: 148, 100
+  orig: 148, 100
+  offset: 0, 0
+  index: -1
+simpleEnemyDamaged
+  rotate: false
+  xy: 452, 2
+  size: 148, 100
+  orig: 148, 100
+  offset: 0, 0
+  index: -1
+simpleEnemyBlue
+  rotate: false
+  xy: 602, 2
+  size: 148, 100
+  orig: 148, 100
+  offset: 0, 0
+  index: -1
+powerupX5
+  rotate: false
+  xy: 752, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+powerupStar
+  rotate: false
+  xy: 854, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+powerupHeal
+  rotate: false
+  xy: 956, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+coin
+  rotate: false
+  xy: 1058, 2
   size: 79, 100
   orig: 79, 100
   offset: 0, 0
   index: -1
-corruptor
+corruptorScored
   rotate: false
-  xy: 233, 2
+  xy: 1139, 2
   size: 45, 38
   orig: 45, 38
   offset: 0, 0
   index: -1
-laserBullet
+corruptorHealed
   rotate: false
-  xy: 280, 2
+  xy: 1139, 42
+  size: 45, 38
+  orig: 45, 38
+  offset: 0, 0
+  index: -1
+corruptorDamaged
+  rotate: false
+  xy: 1139, 82
+  size: 45, 38
+  orig: 45, 38
+  offset: 0, 0
+  index: -1
+corruptor
+  rotate: false
+  xy: 1186, 2
+  size: 45, 38
+  orig: 45, 38
+  offset: 0, 0
+  index: -1
+laserBulletRed
+  rotate: false
+  xy: 1233, 2
+  size: 100, 25
+  orig: 100, 25
+  offset: 0, 0
+  index: -1
+laserBulletPurple
+  rotate: false
+  xy: 1233, 29
+  size: 100, 25
+  orig: 100, 25
+  offset: 0, 0
+  index: -1
+laserBulletGreen
+  rotate: false
+  xy: 1233, 56
+  size: 100, 25
+  orig: 100, 25
+  offset: 0, 0
+  index: -1
+laserBulletBlue
+  rotate: false
+  xy: 1233, 83
   size: 100, 25
   orig: 100, 25
   offset: 0, 0
@@ -36,12 +127,5 @@ corrosiveBile
   xy: 2, 104
   size: 12, 10
   orig: 12, 10
-  offset: 0, 0
-  index: -1
-backgroundStar
-  rotate: false
-  xy: 2, 116
-  size: 10, 9
-  orig: 10, 9
   offset: 0, 0
   index: -1

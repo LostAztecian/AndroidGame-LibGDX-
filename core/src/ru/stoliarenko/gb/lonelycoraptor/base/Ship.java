@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
-import ru.stoliarenko.gb.lonelycoraptor.objects.weapons.CorrosiveBileLauncher;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 /**
@@ -12,7 +11,7 @@ import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
  */
 public abstract class Ship extends SpaceObject {
 
-    @NotNull protected ShipWeapon weapon = new CorrosiveBileLauncher();
+    @NotNull protected ShipWeapon weapon;
     protected float ROTATION = 200;
     protected float hp; //TODO add hit points
 

@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import org.jetbrains.annotations.NotNull;
 
 import ru.stoliarenko.gb.lonelycoraptor.base.Ship;
+import ru.stoliarenko.gb.lonelycoraptor.base.ShipWeapon;
+import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
@@ -31,6 +33,7 @@ public final class Corruptor extends Ship {
     private Corruptor(int posX, int posY) {
         super(new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("corruptor"), 1f));
         position.set(posX, posY);
+        weapon = new ShipWeapon(MainScreen2D.gs, ShipWeapon.Type.CORROSIVE_BILE_LAUNCHER); //TODO game screen pointer
         visible = true;
     }
 

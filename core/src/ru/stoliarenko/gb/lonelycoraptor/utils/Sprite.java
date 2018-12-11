@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import lombok.Getter;
 
-public final class Sprite {
+public final class Sprite implements Cloneable{
 
     private TextureRegion img;
 
@@ -27,6 +27,16 @@ public final class Sprite {
         this.halfHeight = img.getRegionHeight() / 2;
         this.radius = (float)Math.sqrt(halfHeight*halfHeight + halfWidth*halfWidth);
         this.centerPosition = new Vector2(img.getRegionWidth()/2, img.getRegionHeight()/2);
+    }
+
+    public Sprite(@NotNull final Sprite that) {
+        this.img = that.img;
+        this.baseScale = that.baseScale;
+        this.scale = that.scale;
+        this.halfWidth = that.halfWidth;
+        this.halfHeight = that.halfHeight;
+        this.radius = that.radius;
+        this.centerPosition = that.centerPosition;
     }
 
     public void drawAt(@NotNull final SpriteBatch batch, @NotNull final Vector2 position, float angle) {

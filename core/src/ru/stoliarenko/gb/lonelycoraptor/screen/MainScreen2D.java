@@ -11,15 +11,18 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import lombok.Getter;
 import ru.stoliarenko.gb.lonelycoraptor.TestCorruptor;
 import ru.stoliarenko.gb.lonelycoraptor.base.BaseScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.base.SpaceObject;
+import ru.stoliarenko.gb.lonelycoraptor.emitters.ConsumableEmitter;
+import ru.stoliarenko.gb.lonelycoraptor.emitters.ProjectileEmitter;
+import ru.stoliarenko.gb.lonelycoraptor.emitters.SimpleEnemyEmitter;
 import ru.stoliarenko.gb.lonelycoraptor.objects.Background;
 import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.FireButton;
 import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.sliders.Slider;
 import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Corruptor;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
-import ru.stoliarenko.gb.lonelycoraptor.utils.Emitters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 
 /**
@@ -33,15 +36,22 @@ import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
  */
 public final class MainScreen2D extends BaseScreen2D {
 
+    public static MainScreen2D gs;//delete this
+
     private final TestCorruptor game;
     private final Background background;
     private final List<SpaceObject> spaceObjects;
     private final Slider slider;
     private final FireButton fireButton;
 
+    private ConsumableEmitter consumableEmitter;
+    @Getter private ProjectileEmitter projectileEmitter;
+    private SimpleEnemyEmitter simpleEnemyEmitter;
+
 
     public MainScreen2D(@NotNull final TestCorruptor game,  @NotNull final SpriteBatch batch) {
         super(batch);
+        gs = this; //delete this
         this.game = game;
         background = Assets.getInstance().getBackground();
 
@@ -54,6 +64,10 @@ public final class MainScreen2D extends BaseScreen2D {
 
         slider = new Slider(new Vector2(120, 120));
         fireButton = new FireButton(new Vector2(ScreenParameters.myScreen.getWidth() - 120, 120));
+
+        consumableEmitter = new ConsumableEmitter(this);
+        projectileEmitter = new ProjectileEmitter(this);
+        simpleEnemyEmitter = new SimpleEnemyEmitter(this);
     }
 
     @Override
@@ -77,7 +91,10 @@ public final class MainScreen2D extends BaseScreen2D {
         background.update(dt);
         if (isPaused) return;
 
-        Emitters.moveAll(dt);
+        consumableEmitter.move(dt);
+        projectileEmitter.move(dt);
+        simpleEnemyEmitter.move(dt);
+
         Corruptor.getCorruptor().setAcceleration(slider.getShift());
         for (int i = 0; i < spaceObjects.size(); i++) {
             spaceObjects.get(i).move(dt);
@@ -86,7 +103,11 @@ public final class MainScreen2D extends BaseScreen2D {
 
     private void drawAll() {
         background.draw(batch);
-        Emitters.drawAll(batch);
+
+        consumableEmitter.draw(batch);
+        projectileEmitter.draw(batch);
+        simpleEnemyEmitter.draw(batch);
+
         for (int i = 0; i < spaceObjects.size(); i++) {
             spaceObjects.get(i).draw(batch);
         }
@@ -98,7 +119,6 @@ public final class MainScreen2D extends BaseScreen2D {
     public void dispose() {
         super.dispose();
         background.dispose();
-//        Emitters.disposeAll(); TODO dispose method
     }
 
 

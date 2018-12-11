@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import org.jetbrains.annotations.NotNull;
 
 import ru.stoliarenko.gb.lonelycoraptor.base.Projectile;
+import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
@@ -18,7 +19,8 @@ public class CorrosiveBile extends Projectile {
     private final float chargeableRange = 900;
 
     public CorrosiveBile(){
-        super(new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("corrosiveBile"), 1f));
+        super(MainScreen2D.gs, new Sprite[0]);
+//        super(new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("corrosiveBile"), 1f));
     }
 
     @Override
