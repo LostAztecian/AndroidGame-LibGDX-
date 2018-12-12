@@ -1,4 +1,4 @@
-package ru.stoliarenko.gb.lonelycoraptor.base;
+package ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.projectiles;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
@@ -6,14 +6,20 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
+import ru.stoliarenko.gb.lonelycoraptor.base.Poolable;
+import ru.stoliarenko.gb.lonelycoraptor.base.SpaceObject;
 import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Corruptor;
+import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy;
+import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 /**
  * Short-living space objects, which may interact with {@code = Ship}
  */
-public class Projectile extends SpaceObject implements Poolable{
+public class Projectile extends SpaceObject implements Poolable {
 
     public enum Type {
         LASER_BULLET_RED(0, Assets.getInstance().getLaserBulletSound()),
@@ -36,7 +42,7 @@ public class Projectile extends SpaceObject implements Poolable{
         }
     }
 
-    private final Screen gs;
+    private final MainScreen2D gs;
     private final Sprite[] imgs;
 
     private  Type type;
@@ -45,7 +51,7 @@ public class Projectile extends SpaceObject implements Poolable{
     protected Vector2 direction = new Vector2();
     private  Vector2 destination = new Vector2();
 
-    public Projectile(@NotNull final Screen gs, @NotNull final Sprite[] imgs){
+    public Projectile(@NotNull final MainScreen2D gs, @NotNull final Sprite[] imgs){
         super(SpaceObject.Type.PROJECTILE, imgs[0]);
         this.gs = gs;
         this.imgs = imgs;
@@ -53,8 +59,24 @@ public class Projectile extends SpaceObject implements Poolable{
 
     protected void checkDestination() {
         if (checkOuterSpace()) destroy();
-        if (isAllied && checkCollision(Corruptor.getCorruptor())) destroy(); //TODO is allied?
         if (type.isChargeable && destination.dst(position) < SPEED / 120) destroy();
+
+        if (!isAllied) {
+            if (checkCollision(gs.getPlayer())) {
+                gs.getPlayer().takeDamage(3);
+                destroy();
+            }
+        } else {
+            final List<SimpleEnemy> enemyList = gs.getSimpleEnemyEmitter().getActiveList();
+            for (int i = 0; i < enemyList.size(); i++) {
+                if (checkCollision(enemyList.get(i))) {
+                    enemyList.get(i).destroy(); //TODO take damage instead of destroy
+                    System.out.println("enemy hit");
+                    destroy();
+                    break;
+                }
+            }
+        }
     }
 
     @Override

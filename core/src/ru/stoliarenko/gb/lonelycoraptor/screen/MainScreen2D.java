@@ -8,13 +8,9 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import lombok.Getter;
 import ru.stoliarenko.gb.lonelycoraptor.TestCorruptor;
 import ru.stoliarenko.gb.lonelycoraptor.base.BaseScreen2D;
-import ru.stoliarenko.gb.lonelycoraptor.base.SpaceObject;
 import ru.stoliarenko.gb.lonelycoraptor.emitters.ConsumableEmitter;
 import ru.stoliarenko.gb.lonelycoraptor.emitters.ProjectileEmitter;
 import ru.stoliarenko.gb.lonelycoraptor.emitters.SimpleEnemyEmitter;
@@ -36,22 +32,19 @@ import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
  */
 public final class MainScreen2D extends BaseScreen2D {
 
-    public static MainScreen2D gs;//delete this
-
     private final TestCorruptor game;
     private final Background background;
-    private final List<SpaceObject> spaceObjects;
+    @Getter private final Corruptor player;
     private final Slider slider;
     private final FireButton fireButton;
 
     private ConsumableEmitter consumableEmitter;
     @Getter private ProjectileEmitter projectileEmitter;
-    private SimpleEnemyEmitter simpleEnemyEmitter;
+    @Getter private SimpleEnemyEmitter simpleEnemyEmitter;
 
 
     public MainScreen2D(@NotNull final TestCorruptor game,  @NotNull final SpriteBatch batch) {
         super(batch);
-        gs = this; //delete this
         this.game = game;
         background = Assets.getInstance().getBackground();
 
@@ -59,11 +52,10 @@ public final class MainScreen2D extends BaseScreen2D {
         music.setVolume(0.5f);
         music.setLooping(true);
 
-        spaceObjects = new CopyOnWriteArrayList<>();
-        spaceObjects.add(Corruptor.getCorruptor());
+        player = new Corruptor(this);
 
         slider = new Slider(new Vector2(120, 120));
-        fireButton = new FireButton(new Vector2(ScreenParameters.myScreen.getWidth() - 120, 120));
+        fireButton = new FireButton(this, new Vector2(ScreenParameters.myScreen.getWidth() - 120, 120));
 
         consumableEmitter = new ConsumableEmitter(this);
         projectileEmitter = new ProjectileEmitter(this);
@@ -79,15 +71,15 @@ public final class MainScreen2D extends BaseScreen2D {
     @Override
     public void render(float delta) {
         super.render(delta);
-        update(delta);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         drawAll();
         batch.end();
+        updateAll(delta);
     }
 
-    private void update(float dt) {
+    private void updateAll(float dt) {
         background.update(dt);
         if (isPaused) return;
 
@@ -95,10 +87,8 @@ public final class MainScreen2D extends BaseScreen2D {
         projectileEmitter.move(dt);
         simpleEnemyEmitter.move(dt);
 
-        Corruptor.getCorruptor().setAcceleration(slider.getShift());
-        for (int i = 0; i < spaceObjects.size(); i++) {
-            spaceObjects.get(i).move(dt);
-        }
+        player.setAcceleration(slider.getShift());
+        player.move(dt);
     }
 
     private void drawAll() {
@@ -108,9 +98,8 @@ public final class MainScreen2D extends BaseScreen2D {
         projectileEmitter.draw(batch);
         simpleEnemyEmitter.draw(batch);
 
-        for (int i = 0; i < spaceObjects.size(); i++) {
-            spaceObjects.get(i).draw(batch);
-        }
+        player.draw(batch);
+
         slider.draw(batch);
         fireButton.draw(batch);
     }
@@ -168,19 +157,19 @@ public final class MainScreen2D extends BaseScreen2D {
         super.keyDown(keycode);
         switch (keycode) {
             case Input.Keys.UP: {
-                Corruptor.getCorruptor().accelerateUp();
+                player.accelerateUp();
                 break;
             }
             case Input.Keys.DOWN: {
-                Corruptor.getCorruptor().accelerateDown();
+                player.accelerateDown();
                 break;
             }
             case Input.Keys.LEFT: {
-                Corruptor.getCorruptor().accelerateLeft();
+                player.accelerateLeft();
                 break;
             }
             case Input.Keys.RIGHT: {
-                Corruptor.getCorruptor().accelerateRight();
+                player.accelerateRight();
                 break;
             }
             case Input.Keys.P: {
@@ -196,19 +185,19 @@ public final class MainScreen2D extends BaseScreen2D {
         super.keyUp(keycode);
         switch (keycode) {
             case Input.Keys.UP: {
-                Corruptor.getCorruptor().accelerateDown();
+                player.accelerateDown();
                 break;
             }
             case Input.Keys.DOWN: {
-                Corruptor.getCorruptor().accelerateUp();
+                player.accelerateUp();
                 break;
             }
             case Input.Keys.LEFT: {
-                Corruptor.getCorruptor().accelerateRight();
+                player.accelerateRight();
                 break;
             }
             case Input.Keys.RIGHT: {
-                Corruptor.getCorruptor().accelerateLeft();
+                player.accelerateLeft();
             }
         }
         return false;

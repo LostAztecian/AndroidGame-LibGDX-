@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import ru.stoliarenko.gb.lonelycoraptor.base.Poolable;
 import ru.stoliarenko.gb.lonelycoraptor.base.Ship;
-import ru.stoliarenko.gb.lonelycoraptor.base.ShipWeapon;
+import ru.stoliarenko.gb.lonelycoraptor.objects.ShipWeapon;
 import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
@@ -57,7 +57,7 @@ public class SimpleEnemy extends Ship implements Poolable {
     public void move(float dt) {
         temp.set(velocity).scl(dt);
         position.add(temp);
-        temp.set(Corruptor.getCorruptor().getPosition());
+        temp.set(gs.getPlayer().getPosition());
         if (checkOuterSpace()) destroy();
         if (position.x > shootPositionX) return;
         shoot((int)temp.x + MathUtils.random(-50, +50), (int)temp.y + MathUtils.random(-50, +50));

@@ -6,17 +6,18 @@ import com.badlogic.gdx.math.Vector2;
 import org.jetbrains.annotations.NotNull;
 
 import ru.stoliarenko.gb.lonelycoraptor.base.ObjectPool;
-import ru.stoliarenko.gb.lonelycoraptor.base.Projectile;
+import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.projectiles.Projectile;
+import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 public final class ProjectileEmitter extends ObjectPool<Projectile> {
 
-    private final Screen gs;
+    private final MainScreen2D gs;
     private final Sprite[] imgs;
 
 
-    public ProjectileEmitter(@NotNull final Screen gs) {
+    public ProjectileEmitter(@NotNull final MainScreen2D gs) {
         this.gs = gs;
         imgs = new Sprite[5];
         imgs[0] = new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("laserBulletRed"), 0.15f);

@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
+import ru.stoliarenko.gb.lonelycoraptor.objects.ShipWeapon;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 /**

@@ -1,11 +1,14 @@
-package ru.stoliarenko.gb.lonelycoraptor.base;
+package ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.consumables;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.MathUtils;
 
 import org.jetbrains.annotations.NotNull;
 
+import ru.stoliarenko.gb.lonelycoraptor.base.Poolable;
+import ru.stoliarenko.gb.lonelycoraptor.base.SpaceObject;
 import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Corruptor;
+import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
@@ -21,11 +24,11 @@ public class Consumable extends SpaceObject implements Poolable {
         Type(int imgIndex) { this.imgIndex = imgIndex; }
     }
 
-    private final Screen gs;
+    private final MainScreen2D gs;
     private final Sprite[] imgs;
     private Type type;
 
-    public Consumable(@NotNull final Screen gs, @NotNull final Sprite[] imgs) {
+    public Consumable(@NotNull final MainScreen2D gs, @NotNull final Sprite[] imgs) {
         super(SpaceObject.Type.CONSUMABLE, imgs[0]);
         this.gs = gs;
         this.imgs = imgs;
@@ -39,8 +42,19 @@ public class Consumable extends SpaceObject implements Poolable {
     @Override
     public void move(float dt) {
         position.add(velocity);
-        if (checkCollision(Corruptor.getCorruptor())) destroy();
         if (position.x + img.getRightShift() < 0) destroy();
+        if (checkCollision(gs.getPlayer())) {
+            destroy();
+            giveBonus();
+        }
+    }
+
+    private void giveBonus() {
+        switch (type) {
+            case COIN: {
+                gs.getPlayer().getScore((int)(100 * img.getScale()));
+            }
+        }
     }
 
     public void init(Type type) {

@@ -6,11 +6,13 @@ import com.badlogic.gdx.math.Vector2;
 import org.jetbrains.annotations.NotNull;
 
 import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Corruptor;
+import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 public final class FireButton {
 
+    private final MainScreen2D gs;
     private final Sprite img;
     private final Sprite circle;
     private final Vector2 basePosition;
@@ -22,7 +24,8 @@ public final class FireButton {
 
     private long timer = 0;
 
-    public FireButton(@NotNull final Vector2 basePosition) {
+    public FireButton(@NotNull final MainScreen2D gs, @NotNull final Vector2 basePosition) {
+        this.gs = gs;
         this.img = new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("slider").split(100, 100)[0][1], 1f);
         this.circle = new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("slider").split(100, 100)[0][0], 1f);
         circle.setScale(1.5f);
@@ -44,14 +47,14 @@ public final class FireButton {
         if (isPressed) return;
         this.isPressed = true;
         this.finger = finger;
-        Corruptor.getCorruptor().setWeaponCharging(true);
+        gs.getPlayer().setWeaponCharging(true);
     }
 
     public void release(int finger) {
         if (!isPressed || finger != this.finger) return;
         this.isPressed = false;
         this.finger = -1;
-        Corruptor.getCorruptor().shoot();
+        gs.getPlayer().shoot();
     }
 
 }

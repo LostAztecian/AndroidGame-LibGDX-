@@ -5,14 +5,15 @@ import com.badlogic.gdx.math.MathUtils;
 
 import org.jetbrains.annotations.NotNull;
 
-import ru.stoliarenko.gb.lonelycoraptor.base.Consumable;
+import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.consumables.Consumable;
 import ru.stoliarenko.gb.lonelycoraptor.base.ObjectPool;
+import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 public final class ConsumableEmitter extends ObjectPool<Consumable> {
 
-    private final Screen gs;
+    private final MainScreen2D gs;
     private final Sprite[] imgs;
 
     private float coinSpawnTimer = 5;
@@ -20,7 +21,7 @@ public final class ConsumableEmitter extends ObjectPool<Consumable> {
     private float healSpawnTimer = 100;
     private float x5SpawnTimer = 100;
 
-    public ConsumableEmitter(@NotNull final Screen gs) {
+    public ConsumableEmitter(@NotNull final MainScreen2D gs) {
         this.gs = gs;
         imgs = new Sprite[4];
         imgs[0] = new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("coin"), 0.1f);

@@ -4,8 +4,10 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 import ru.stoliarenko.gb.lonelycoraptor.base.Ship;
-import ru.stoliarenko.gb.lonelycoraptor.base.ShipWeapon;
+import ru.stoliarenko.gb.lonelycoraptor.objects.ShipWeapon;
 import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
@@ -17,7 +19,15 @@ import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
  */
 public final class Corruptor extends Ship {
 
-    private static Corruptor instance;
+    private MainScreen2D gs;
+
+    private final Sprite regular;
+    private final Sprite damaged;
+    private final Sprite healed;
+    private final Sprite scored;
+
+    private boolean isDamaged = false;
+    private float damagedTimer = 0;
 
     private int score = 0;
 
@@ -30,20 +40,20 @@ public final class Corruptor extends Ship {
     private boolean isChargingWeapon = false;
 
 
-    private Corruptor(int posX, int posY) {
+    public Corruptor(@NotNull final MainScreen2D gs) {
         super(new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("corruptor"), 1f));
-        position.set(posX, posY);
-        weapon = new ShipWeapon(MainScreen2D.gs, ShipWeapon.Type.CORROSIVE_BILE_LAUNCHER); //TODO game screen pointer
-        visible = true;
-    }
+        damaged = new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("corruptorDamaged"), 1f);
+        healed = new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("corruptorHealed"), 1f);
+        scored = new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("corruptorScored"), 1f);
+        regular = img;
 
-    public static Corruptor getCorruptor(){
-        if (instance == null) {
-            final int posX = (int)(ScreenParameters.myScreen.getWidth() / 2);
-            final int posY = (int)(ScreenParameters.myScreen.getHeight() / 2);
-            instance = new Corruptor(posX, posY);
-        }
-        return instance;
+        this.gs = gs;
+        final int posX = (int)(ScreenParameters.myScreen.getWidth() / 2);
+        final int posY = (int)(ScreenParameters.myScreen.getHeight() / 2);
+        position.set(posX, posY);
+
+        weapon = new ShipWeapon(gs, ShipWeapon.Type.CORROSIVE_BILE_LAUNCHER);
+        visible = true;
     }
 
     @Override
@@ -51,8 +61,19 @@ public final class Corruptor extends Ship {
         checkOuterSpace();
         position.mulAdd(velocity, dt);
         if (velocity.len() >= acceleration /60) rotateTo(velocity.angle(), dt);
+        checkCollisions();
+
+        if (isDamaged) {
+            damagedTimer -= dt;
+            if (damagedTimer <= 0) {
+                setImg(regular);
+                isDamaged = false;
+            }
+        }
+
         accelerate(dt);
         slowDown(dt);
+
         if (isChargingWeapon) chargeWeapon(dt);
     }
 
@@ -97,6 +118,13 @@ public final class Corruptor extends Ship {
         return false;
     }
 
+    private void checkCollisions() {
+        final List<SimpleEnemy> enemyList = gs.getSimpleEnemyEmitter().getActiveList();
+        for (int i = 0; i < enemyList.size(); i++) {
+            if (checkCollision(enemyList.get(i))) takeDamage(11);
+        }
+    }
+
     public float setWeaponCharging(boolean flag) {
         isChargingWeapon = flag;
         return 0; //TODO return total charge time
@@ -110,6 +138,15 @@ public final class Corruptor extends Ship {
 
     public void getScore(int score) {
         this.score += score; //TODO score multiplier?
+    }
+
+    public void takeDamage(float damage) {
+        if (isDamaged) return;
+        isDamaged = true;
+        setImg(damaged);
+        damagedTimer = 0.25f;
+
+        System.out.printf("MAYDAY! %.2f damage received!!!%n", damage);
     }
 
     @Override

@@ -1,10 +1,11 @@
-package ru.stoliarenko.gb.lonelycoraptor.base;
+package ru.stoliarenko.gb.lonelycoraptor.objects;
 
 import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
 import lombok.Setter;
+import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.projectiles.Projectile;
 import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
 
 public class ShipWeapon {
