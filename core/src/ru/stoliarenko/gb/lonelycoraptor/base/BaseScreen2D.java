@@ -9,12 +9,17 @@ import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Locale;
 
+import lombok.Getter;
+import ru.stoliarenko.gb.lonelycoraptor.TestCorruptor;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 
 public abstract class BaseScreen2D implements Screen, InputProcessor {
 
+    @Getter protected final TestCorruptor game;
     protected SpriteBatch batch;
     protected Vector2 touch = new Vector2();
     protected Matrix4 myScreenToGL = new Matrix4();
@@ -24,8 +29,9 @@ public abstract class BaseScreen2D implements Screen, InputProcessor {
 
     protected Music music;
 
-    public BaseScreen2D(SpriteBatch batch) {
+    public BaseScreen2D(@NotNull final TestCorruptor game, @NotNull final SpriteBatch batch) {
         this.batch = batch;
+        this.game = game;
     }
 
     @Override

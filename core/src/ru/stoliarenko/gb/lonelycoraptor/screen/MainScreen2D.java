@@ -3,6 +3,7 @@ package ru.stoliarenko.gb.lonelycoraptor.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
@@ -12,14 +13,17 @@ import lombok.Getter;
 import ru.stoliarenko.gb.lonelycoraptor.TestCorruptor;
 import ru.stoliarenko.gb.lonelycoraptor.base.BaseScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.emitters.ConsumableEmitter;
+import ru.stoliarenko.gb.lonelycoraptor.emitters.ExplosionEmitter;
 import ru.stoliarenko.gb.lonelycoraptor.emitters.ProjectileEmitter;
 import ru.stoliarenko.gb.lonelycoraptor.emitters.SimpleEnemyEmitter;
 import ru.stoliarenko.gb.lonelycoraptor.objects.Background;
+import ru.stoliarenko.gb.lonelycoraptor.objects.UserInterface;
 import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.FireButton;
 import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.sliders.Slider;
 import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Corruptor;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
+import ru.stoliarenko.gb.lonelycoraptor.utils.Text;
 
 /**
  * Game main screen
@@ -32,21 +36,29 @@ import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
  */
 public final class MainScreen2D extends BaseScreen2D {
 
-    private final TestCorruptor game;
+    //background
     private final Background background;
+    private final BitmapFont font;
+    private final Text topText;
+
+    //payload
     @Getter private final Corruptor player;
-    private final Slider slider;
-    private final FireButton fireButton;
 
     private ConsumableEmitter consumableEmitter;
     @Getter private ProjectileEmitter projectileEmitter;
     @Getter private SimpleEnemyEmitter simpleEnemyEmitter;
+    @Getter private ExplosionEmitter explosionEmitter;
 
+    //foreground
+    private UserInterface ui;
+    private final Slider slider;
+    private final FireButton fireButton;
 
     public MainScreen2D(@NotNull final TestCorruptor game,  @NotNull final SpriteBatch batch) {
-        super(batch);
-        this.game = game;
+        super(game, batch);
         background = Assets.getInstance().getBackground();
+        font = Assets.getInstance().getAssetManager().get("mainFont96.ttf");
+        topText = new Text(font, new Vector2(ScreenParameters.myScreen.getWidth()/2, ScreenParameters.myScreen.getHeight() -120), "Paused");
 
         music = Assets.getInstance().getLvl01Music();
         music.setVolume(0.5f);
@@ -60,6 +72,9 @@ public final class MainScreen2D extends BaseScreen2D {
         consumableEmitter = new ConsumableEmitter(this);
         projectileEmitter = new ProjectileEmitter(this);
         simpleEnemyEmitter = new SimpleEnemyEmitter(this);
+        explosionEmitter = new ExplosionEmitter(this);
+
+        ui = new UserInterface(this);
     }
 
     @Override
@@ -86,6 +101,7 @@ public final class MainScreen2D extends BaseScreen2D {
         consumableEmitter.move(dt);
         projectileEmitter.move(dt);
         simpleEnemyEmitter.move(dt);
+        explosionEmitter.move(dt);
 
         player.setAcceleration(slider.getShift());
         player.move(dt);
@@ -97,11 +113,15 @@ public final class MainScreen2D extends BaseScreen2D {
         consumableEmitter.draw(batch);
         projectileEmitter.draw(batch);
         simpleEnemyEmitter.draw(batch);
+        explosionEmitter.draw(batch);
 
         player.draw(batch);
 
         slider.draw(batch);
         fireButton.draw(batch);
+        ui.draw(batch);
+
+        if (isPaused) topText.draw(batch);
     }
 
     @Override

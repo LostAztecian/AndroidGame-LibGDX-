@@ -19,20 +19,21 @@ import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.Butto
 import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.ButtonX;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
+import ru.stoliarenko.gb.lonelycoraptor.utils.Text;
 
 public final class MenuScreen2D extends BaseScreen2D {
 
-    private final TestCorruptor game;
-    private final BitmapFont font; // remove if not used
+    private final BitmapFont font;
     private final Background background;
     private final List<Button> buttons;
 
-    public MenuScreen2D(@NotNull final TestCorruptor game, SpriteBatch batch) {
-        super(batch);
-        this.game = game;
+    private final Text topText;
+
+    public MenuScreen2D(@NotNull final TestCorruptor game, @NotNull final SpriteBatch batch) {
+        super(game, batch);
         background = Assets.getInstance().getBackground();
 
-        font = Assets.getInstance().getAssetManager().get("mainFont32.ttf");
+        font = Assets.getInstance().getAssetManager().get("mainFont96.ttf");
 
         music = Assets.getInstance().getMenuMusic();
         music.setLooping(true);
@@ -41,6 +42,17 @@ public final class MenuScreen2D extends BaseScreen2D {
         buttons = new CopyOnWriteArrayList<>();
         buttons.add(new ButtonX(game, new Vector2(ScreenParameters.myScreen.getWidth() - 45, ScreenParameters.myScreen.getHeight() - 45)));
         buttons.add(new ButtonNewGame(game, (new Vector2(ScreenParameters.myScreen.getWidth()/2, ScreenParameters.myScreen.getHeight()/2))));
+
+        topText = new Text(font , new Vector2(ScreenParameters.myScreen.getWidth()/2, ScreenParameters.myScreen.getHeight() - 120), "");
+    }
+
+    public MenuScreen2D(@NotNull final TestCorruptor game, @NotNull final SpriteBatch batch, @NotNull final String text) {
+        this(game, batch);
+        setTopText(text);
+    }
+
+    public void setTopText(@NotNull final String text) {
+        topText.setText(text);
     }
 
     @Override
@@ -65,6 +77,7 @@ public final class MenuScreen2D extends BaseScreen2D {
         for (int i = 0; i < buttons.size(); i++) {
             buttons.get(i).draw(batch);
         }
+        topText.draw(batch);
     }
 
     @Override

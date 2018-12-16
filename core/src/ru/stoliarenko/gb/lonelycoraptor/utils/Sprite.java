@@ -39,8 +39,17 @@ public final class Sprite implements Cloneable{
         this.centerPosition = that.centerPosition;
     }
 
+    public void setImg(@NotNull final TextureRegion newImg) {
+        if (img.getRegionWidth() != newImg.getRegionWidth()) return;
+        if (img.getRegionHeight() != newImg.getRegionHeight()) return;
+        this.img = newImg;
+    }
+
     public void drawAt(@NotNull final SpriteBatch batch, @NotNull final Vector2 position, float angle) {
         batch.draw(img, position.x - centerPosition.x, position.y - centerPosition.y, centerPosition.x, centerPosition.y, img.getRegionWidth(), img.getRegionHeight(), scale, scale, angle);
+    }
+    public void drawAt(@NotNull final SpriteBatch batch, @NotNull final Vector2 position, float widthPercent, float heightPercent) {
+        batch.draw(img, position.x - centerPosition.x, position.y - centerPosition.y, centerPosition.x, centerPosition.y, img.getRegionWidth()*widthPercent, img.getRegionHeight()*heightPercent, scale, scale, 0);
     }
 
     public float getLeftShift() {

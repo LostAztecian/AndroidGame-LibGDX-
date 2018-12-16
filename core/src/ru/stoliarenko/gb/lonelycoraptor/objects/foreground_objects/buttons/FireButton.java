@@ -26,8 +26,8 @@ public final class FireButton {
 
     public FireButton(@NotNull final MainScreen2D gs, @NotNull final Vector2 basePosition) {
         this.gs = gs;
-        this.img = new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("slider").split(100, 100)[0][1], 1f);
-        this.circle = new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("slider").split(100, 100)[0][0], 1f);
+        this.img = new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("slider"), 1f);
+        this.circle = new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("sliderCircle"), 1f);
         circle.setScale(1.5f);
         r2 = img.getRightShift() * img.getRightShift();
         this.basePosition = basePosition;

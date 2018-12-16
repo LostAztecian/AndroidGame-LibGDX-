@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import org.jetbrains.annotations.NotNull;
 
 import lombok.Setter;
+import ru.stoliarenko.gb.lonelycoraptor.base.Ship;
 import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.projectiles.Projectile;
 import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
 
@@ -39,11 +40,11 @@ public class ShipWeapon {
         this.fireRateScale = 1f;
     }
 
-    public void shoot(@NotNull final Vector2 currentPosition, @NotNull final Vector2 destinationPosition) {
+    public void shoot(Ship owner, @NotNull final Vector2 currentPosition, @NotNull final Vector2 destinationPosition) {
         if (checkCooldown()) return;
         if (type.isChargeable) { destinationPosition.scl(50+250f*charge).add(currentPosition); }
         lastShotTime = System.currentTimeMillis();
-        gs.getProjectileEmitter().spawn(type.bulletType, currentPosition, destinationPosition);
+        gs.getProjectileEmitter().spawn(type.bulletType, currentPosition, destinationPosition, owner);
         charge = 0;
     }
 

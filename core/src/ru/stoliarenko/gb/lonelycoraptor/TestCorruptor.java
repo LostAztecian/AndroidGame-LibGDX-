@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.screen.MenuScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
+import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenManager;
 
 public class TestCorruptor extends Game {
 
@@ -16,7 +17,7 @@ public class TestCorruptor extends Game {
 
     @Override
     public void create() {
-        Assets.getInstance().loadAssets();
+        Assets.getInstance().loadAssets(ScreenManager.Type.GAME);
         batch = new SpriteBatch();
         menuScreen = new MenuScreen2D(this, batch);
         setScreen(menuScreen);
@@ -42,7 +43,8 @@ public class TestCorruptor extends Game {
         setScreen(mainScreen);
     }
 
-    public void mainMenu() {
+    public void mainMenu(String text) {
+        menuScreen.setTopText(text);
         setScreen(menuScreen);
     }
 

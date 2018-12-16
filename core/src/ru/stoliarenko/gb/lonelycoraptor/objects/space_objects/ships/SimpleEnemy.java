@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 import org.jetbrains.annotations.NotNull;
 
+import ru.stoliarenko.gb.lonelycoraptor.base.Explosion;
 import ru.stoliarenko.gb.lonelycoraptor.base.Poolable;
 import ru.stoliarenko.gb.lonelycoraptor.base.Ship;
 import ru.stoliarenko.gb.lonelycoraptor.objects.ShipWeapon;
@@ -27,19 +28,21 @@ public class SimpleEnemy extends Ship implements Poolable {
     private final MainScreen2D gs;
     private final Sprite[] imgs;
     private Type type; // do i need this?
-    private Sprite imgDamaged = new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("simpleEnemyDamaged"), 0.3f); //TODO damaged animation
 
     private int shootPositionX;
 
     public SimpleEnemy(@NotNull final MainScreen2D gs, @NotNull final Sprite[] imgs) {
-        super(imgs[0]);
+        super(imgs[0], gs);
         this.gs = gs;
         this.imgs = imgs;
+        damaged = new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("simpleEnemyDamaged"), 0.3f);
     }
 
     public void init(@NotNull final Type type) {
         this.type = type;
-        setImg(imgs[type.imgIndex]);
+        regular = imgs[type.imgIndex];
+        setImg(regular);
+
 
         position.x = ScreenParameters.myScreen.getWidth() + img.getRightShift();
         position.y = MathUtils.random(100, ScreenParameters.myScreen.getHeight() - 100);
@@ -49,12 +52,14 @@ public class SimpleEnemy extends Ship implements Poolable {
 
         weapon = new ShipWeapon(gs, ShipWeapon.Type.LASER_CANNON_GREEN); //TODO weapon must be versatile
 
+        hp = 10;
         visible = true;
         active = true;
     }
 
     @Override
     public void move(float dt) {
+        checkDamagedTimer(dt);
         temp.set(velocity).scl(dt);
         position.add(temp);
         temp.set(gs.getPlayer().getPosition());
@@ -66,6 +71,7 @@ public class SimpleEnemy extends Ship implements Poolable {
     @Override
     public void destroy() {
         active = false;
+        if (hp <= 0) gs.getExplosionEmitter().spawn(Explosion.Type.SHIP, position, this);
     } //TODO should I pull up destroy method to SpaceObject?
 
 }

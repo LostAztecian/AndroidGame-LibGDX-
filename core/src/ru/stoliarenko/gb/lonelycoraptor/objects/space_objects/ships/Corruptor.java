@@ -1,11 +1,14 @@
 package ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import lombok.Getter;
 import ru.stoliarenko.gb.lonelycoraptor.base.Ship;
 import ru.stoliarenko.gb.lonelycoraptor.objects.ShipWeapon;
 import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
@@ -19,17 +22,10 @@ import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
  */
 public final class Corruptor extends Ship {
 
-    private MainScreen2D gs;
-
-    private final Sprite regular;
-    private final Sprite damaged;
     private final Sprite healed;
     private final Sprite scored;
 
-    private boolean isDamaged = false;
-    private float damagedTimer = 0;
-
-    private int score = 0;
+    @Getter private int score = 0;
 
     private Vector2 sliderAcceleration = new Vector2(0, 0);
     private float acceleration = 300;
@@ -38,16 +34,16 @@ public final class Corruptor extends Ship {
     private float verticalAcceleration = 0;
 
     private boolean isChargingWeapon = false;
+    private Sound chargindSound = Assets.getInstance().getAssetManager().get("sounds/charging.mp3", Sound.class);
 
 
     public Corruptor(@NotNull final MainScreen2D gs) {
-        super(new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("corruptor"), 1f));
+        super(new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("corruptor"), 1f), gs);
         damaged = new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("corruptorDamaged"), 1f);
         healed = new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("corruptorHealed"), 1f);
         scored = new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("corruptorScored"), 1f);
         regular = img;
 
-        this.gs = gs;
         final int posX = (int)(ScreenParameters.myScreen.getWidth() / 2);
         final int posY = (int)(ScreenParameters.myScreen.getHeight() / 2);
         position.set(posX, posY);
@@ -63,13 +59,7 @@ public final class Corruptor extends Ship {
         if (velocity.len() >= acceleration /60) rotateTo(velocity.angle(), dt);
         checkCollisions();
 
-        if (isDamaged) {
-            damagedTimer -= dt;
-            if (damagedTimer <= 0) {
-                setImg(regular);
-                isDamaged = false;
-            }
-        }
+        checkDamagedTimer(dt);
 
         accelerate(dt);
         slowDown(dt);
@@ -121,12 +111,17 @@ public final class Corruptor extends Ship {
     private void checkCollisions() {
         final List<SimpleEnemy> enemyList = gs.getSimpleEnemyEmitter().getActiveList();
         for (int i = 0; i < enemyList.size(); i++) {
-            if (checkCollision(enemyList.get(i))) takeDamage(11);
+            if (checkCollision(enemyList.get(i))) {
+                takeDamage(10 * enemyList.get(i).getCollisionDamageMultiplier());
+                enemyList.get(i).takeDamage(10 * getCollisionDamageMultiplier());
+            }
         }
     }
 
     public float setWeaponCharging(boolean flag) {
         isChargingWeapon = flag;
+        if (flag) chargindSound.play(0.5f); //unsafe
+        else chargindSound.stop();
         return 0; //TODO return total charge time
     }
 
@@ -140,18 +135,9 @@ public final class Corruptor extends Ship {
         this.score += score; //TODO score multiplier?
     }
 
-    public void takeDamage(float damage) {
-        if (isDamaged) return;
-        isDamaged = true;
-        setImg(damaged);
-        damagedTimer = 0.25f;
-
-        System.out.printf("MAYDAY! %.2f damage received!!!%n", damage);
-    }
-
     @Override
     protected void destroy() {
-        //TODO lifecount --
+        gs.getGame().mainMenu("Game Over!");
     }
 
 }

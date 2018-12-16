@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import org.jetbrains.annotations.NotNull;
 
 import ru.stoliarenko.gb.lonelycoraptor.base.ObjectPool;
+import ru.stoliarenko.gb.lonelycoraptor.base.Ship;
 import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.projectiles.Projectile;
 import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
@@ -38,21 +39,21 @@ public final class ProjectileEmitter extends ObjectPool<Projectile> {
         super.move(dt);
     }
 
-    public void spawn(@NotNull final Projectile.Type type, @NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition) {
-        getActiveElement().init(type, currentPosition, destinationPosition);
+    public void spawn(@NotNull final Projectile.Type type, @NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition, Ship owner) {
+        getActiveElement().init(type, currentPosition, destinationPosition, owner);
     }
 
-    public void spawnLaserBulletRed(@NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition) {
-        getActiveElement().init(Projectile.Type.LASER_BULLET_RED, currentPosition, destinationPosition);
+    public void spawnLaserBulletRed(@NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition, Ship owner) {
+        getActiveElement().init(Projectile.Type.LASER_BULLET_RED, currentPosition, destinationPosition, owner);
     }
-    public void spawnLaserBulletBlue(@NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition) {
-        getActiveElement().init(Projectile.Type.LASER_BULLET_BLUE, currentPosition, destinationPosition);
+    public void spawnLaserBulletBlue(@NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition, Ship owner) {
+        getActiveElement().init(Projectile.Type.LASER_BULLET_BLUE, currentPosition, destinationPosition, owner);
     }
-    public void spawnLaserBulletGreen(@NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition) {
-        getActiveElement().init(Projectile.Type.LASER_BULLET_GREEN, currentPosition, destinationPosition);
+    public void spawnLaserBulletGreen(@NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition, Ship owner) {
+        getActiveElement().init(Projectile.Type.LASER_BULLET_GREEN, currentPosition, destinationPosition, owner);
     }
-    public void spawnLaserBulletPurple(@NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition) {
-        getActiveElement().init(Projectile.Type.LASER_BULLET_PURPLE, currentPosition, destinationPosition);
+    public void spawnLaserBulletPurple(@NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition, Ship owner) {
+        getActiveElement().init(Projectile.Type.LASER_BULLET_PURPLE, currentPosition, destinationPosition, owner);
     }
 
 }

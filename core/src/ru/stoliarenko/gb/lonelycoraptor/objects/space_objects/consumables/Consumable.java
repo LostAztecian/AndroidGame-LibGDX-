@@ -1,13 +1,11 @@
 package ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.consumables;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.MathUtils;
 
 import org.jetbrains.annotations.NotNull;
 
 import ru.stoliarenko.gb.lonelycoraptor.base.Poolable;
 import ru.stoliarenko.gb.lonelycoraptor.base.SpaceObject;
-import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Corruptor;
 import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
@@ -61,8 +59,8 @@ public class Consumable extends SpaceObject implements Poolable {
         this.type = type;
         setImg(imgs[type.imgIndex]);
         if (type == Type.COIN) img.setScale(MathUtils.random(1f, 2f));
-        position.x = ScreenParameters.myScreen.getWidth() + img.getLeftShift();
-        position.y = MathUtils.random(ScreenParameters.myScreen.getHeight() + img.getTopShift());
+        position.x = ScreenParameters.myScreen.getWidth() + img.getRightShift();
+        position.y = MathUtils.random(img.getTopShift(), ScreenParameters.myScreen.getHeight() + img.getBottomShift());
         velocity.x = - MathUtils.random(1f, 3f);
         active = true;
         visible = true;

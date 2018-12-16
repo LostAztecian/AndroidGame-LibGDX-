@@ -1,6 +1,5 @@
 package ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.projectiles;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 
@@ -8,9 +7,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import ru.stoliarenko.gb.lonelycoraptor.base.Explosion;
 import ru.stoliarenko.gb.lonelycoraptor.base.Poolable;
+import ru.stoliarenko.gb.lonelycoraptor.base.Ship;
 import ru.stoliarenko.gb.lonelycoraptor.base.SpaceObject;
-import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Corruptor;
 import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy;
 import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
@@ -22,22 +22,25 @@ import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 public class Projectile extends SpaceObject implements Poolable {
 
     public enum Type {
-        LASER_BULLET_RED(0, Assets.getInstance().getLaserBulletSound()),
-        LASER_BULLET_BLUE(1, Assets.getInstance().getLaserBulletSound()),
-        LASER_BULLET_GREEN(2, Assets.getInstance().getLaserBulletSound()),
-        LASER_BULLET_PURPLE(3, Assets.getInstance().getLaserBulletSound()),
-        CORROSIVE_BILE(4, Assets.getInstance().getLaserBulletSound(), true);
+        LASER_BULLET_RED(3, Assets.getInstance().getLaserBulletSound(), null),
+        LASER_BULLET_BLUE(3, Assets.getInstance().getLaserBulletSound(), null),
+        LASER_BULLET_GREEN(3, Assets.getInstance().getLaserBulletSound(), null),
+        LASER_BULLET_PURPLE(3, Assets.getInstance().getLaserBulletSound(), null),
+        CORROSIVE_BILE(5, Assets.getInstance().getAssetManager().get("sounds/releasing.mp3", Sound.class), Explosion.Type.CORROSIVE_BILE, true);
 
-        private int imgIndex;
+        private int damage;
         private Sound sound;
         private boolean isChargeable = false;
-        Type(int index, Sound sound) {
-            imgIndex = index;
+        private Explosion.Type afterEffect;
+        Type(int damage, Sound sound, Explosion.Type aftereffect) {
+            this.damage = damage;
             this.sound = sound;
+            this.afterEffect = aftereffect;
         }
-        Type(int index, Sound sound, boolean isChargeable) {
-            imgIndex = index;
+        Type(int damage, Sound sound, Explosion.Type aftereffect, boolean isChargeable) {
+            this.damage = damage;
             this.sound = sound;
+            this.afterEffect = aftereffect;
             this.isChargeable = isChargeable;
         }
     }
@@ -46,7 +49,7 @@ public class Projectile extends SpaceObject implements Poolable {
     private final Sprite[] imgs;
 
     private  Type type;
-    protected boolean isAllied = false; //TODO add friendly fire check
+    private Ship owner;
     protected float SPEED = 750f;
     protected Vector2 direction = new Vector2();
     private  Vector2 destination = new Vector2();
@@ -61,7 +64,7 @@ public class Projectile extends SpaceObject implements Poolable {
         if (checkOuterSpace()) destroy();
         if (type.isChargeable && destination.dst(position) < SPEED / 120) destroy();
 
-        if (!isAllied) {
+        if (owner != gs.getPlayer()) {
             if (checkCollision(gs.getPlayer())) {
                 gs.getPlayer().takeDamage(3);
                 destroy();
@@ -70,7 +73,7 @@ public class Projectile extends SpaceObject implements Poolable {
             final List<SimpleEnemy> enemyList = gs.getSimpleEnemyEmitter().getActiveList();
             for (int i = 0; i < enemyList.size(); i++) {
                 if (checkCollision(enemyList.get(i))) {
-                    enemyList.get(i).destroy(); //TODO take damage instead of destroy
+                    enemyList.get(i).takeDamage(type.damage * gs.getPlayer().getDamageMultiplier()); //TODO take damage instead of destroy
                     System.out.println("enemy hit");
                     destroy();
                     break;
@@ -82,6 +85,7 @@ public class Projectile extends SpaceObject implements Poolable {
     @Override
     public void destroy() {
         active = false;
+        if (type.afterEffect != null) gs.getExplosionEmitter().spawn(type.afterEffect, position, owner);
     }
 
     @Override
@@ -90,9 +94,10 @@ public class Projectile extends SpaceObject implements Poolable {
         checkDestination();
     }
 
-    public void init(@NotNull final Type type, @NotNull final Vector2 currentPosition, @NotNull final Vector2 destinationPosition) {
+    public void init(@NotNull final Type type, @NotNull final Vector2 currentPosition, @NotNull final Vector2 destinationPosition, Ship owner) {
         this.type = type;
-        setImg(imgs[type.imgIndex]);
+        this.owner = owner;
+        setImg(imgs[type.ordinal()]);
         position.set(currentPosition.sub(WIDTH/2, HEIGHT/2));
         destination.set(destinationPosition.sub(WIDTH/2, HEIGHT/2));
         direction.set(destinationPosition).sub(currentPosition);

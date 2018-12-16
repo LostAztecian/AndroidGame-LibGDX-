@@ -31,40 +31,46 @@ public class Assets {
     private AssetManager assetManager;
     private Background background;
 
-    private TextureAtlas backgroundAtlas;
+    private TextureAtlas backgroundAtlas = new TextureAtlas("textures/background.pack");
+    private TextureAtlas loadingScreenAtlas = new TextureAtlas("textures/foreground.pack");
     private TextureAtlas spaceAtlas;
     private TextureAtlas foregroundAtlas;
+    private TextureAtlas explosionsAtlas;
 
     private Music menuMusic;
     private Music lvl01Music;
 
     private Sound laserBulletSound;
 
-    public void loadAssets() {
+    public void loadAssets(ScreenManager.Type type) {
+        switch (type) {
+            case GAME: {
+                break;
+            }
+            case ANY_MENU: {
+                break;
+            }
+        }
+        if (spaceAtlas != null) return; //only 1st loading
+
         generateStdFont(28);
         generateStdFont(32);
+        generateStdFont(96);
 
         assetManager.load("textures/background.pack", TextureAtlas.class);
         assetManager.load("textures/spaceObjects.pack", TextureAtlas.class);
         assetManager.load("textures/foreground.pack", TextureAtlas.class);
+        assetManager.load("textures/explosions.pack", TextureAtlas.class);
 
         assetManager.load("music/music01.mp3", Music.class);
         assetManager.load("music/menuMusic.mp3", Music.class);
 
         assetManager.load("sounds/laserBullet.mp3", Sound.class);
+        assetManager.load("sounds/charging.mp3", Sound.class);
+        assetManager.load("sounds/releasing.mp3", Sound.class);
 
         assetManager.finishLoading();
-
-        backgroundAtlas = assetManager.get("textures/background.pack", TextureAtlas.class);
-        spaceAtlas = assetManager.get("textures/spaceObjects.pack", TextureAtlas.class);
-        foregroundAtlas = assetManager.get("textures/foreground.pack", TextureAtlas.class);
-
-        menuMusic = assetManager.get("music/menuMusic.mp3", Music.class);
-        lvl01Music = assetManager.get("music/music01.mp3", Music.class);
-
-        laserBulletSound = assetManager.get("sounds/laserBullet.mp3", Sound.class);
-
-        background = Background.getInstance();
+        makeLinks();
     }
 
     public void generateStdFont(int size) {
@@ -83,6 +89,20 @@ public class Assets {
         fontParameter.fontParameters.shadowColor = Color.DARK_GRAY;
 
         assetManager.load("mainFont"+size+".ttf", BitmapFont.class, fontParameter);
+    }
+
+    public void makeLinks() {
+        backgroundAtlas = assetManager.get("textures/background.pack", TextureAtlas.class);
+        spaceAtlas = assetManager.get("textures/spaceObjects.pack", TextureAtlas.class);
+        foregroundAtlas = assetManager.get("textures/foreground.pack", TextureAtlas.class);
+        explosionsAtlas = assetManager.get("textures/explosions.pack", TextureAtlas.class);
+
+        menuMusic = assetManager.get("music/menuMusic.mp3", Music.class);
+        lvl01Music = assetManager.get("music/music01.mp3", Music.class);
+
+        laserBulletSound = assetManager.get("sounds/laserBullet.mp3", Sound.class);
+
+        background = Background.getInstance();
     }
 
     public void clear() {

@@ -1,6 +1,5 @@
 package ru.stoliarenko.gb.lonelycoraptor.emitters;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.MathUtils;
 
 import org.jetbrains.annotations.NotNull;

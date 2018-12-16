@@ -22,8 +22,8 @@ public final class Slider {
     private int finger = -1;
 
     public Slider(@NotNull final Vector2 basePosition) {
-        this.img = new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("slider").split(100, 100)[0][1], 1f);
-        this.circle = new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("slider").split(100, 100)[0][0], 1f);
+        this.img = new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("slider"), 1f);
+        this.circle = new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("sliderCircle"), 1f);
         circle.setScale(1.5f);
         r2 = img.getRightShift() * img.getRightShift();
         this.basePosition = basePosition;
@@ -31,8 +31,9 @@ public final class Slider {
     }
 
     public void draw(@NotNull final SpriteBatch batch) {
-        img.drawAt(batch, currentPosition, 0);
         circle.drawAt(batch, basePosition, 0);
+        img.drawAt(batch, currentPosition, 0);
+
     }
 
     public Vector2 getShift() {
