@@ -10,12 +10,11 @@ import com.badlogic.gdx.math.Vector2;
 import org.jetbrains.annotations.NotNull;
 
 import lombok.Getter;
-import ru.stoliarenko.gb.lonelycoraptor.TestCorruptor;
-import ru.stoliarenko.gb.lonelycoraptor.base.BaseScreen2D;
+import ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor;
 import ru.stoliarenko.gb.lonelycoraptor.emitters.ConsumableEmitter;
+import ru.stoliarenko.gb.lonelycoraptor.emitters.EnemyEmitter;
 import ru.stoliarenko.gb.lonelycoraptor.emitters.ExplosionEmitter;
 import ru.stoliarenko.gb.lonelycoraptor.emitters.ProjectileEmitter;
-import ru.stoliarenko.gb.lonelycoraptor.emitters.SimpleEnemyEmitter;
 import ru.stoliarenko.gb.lonelycoraptor.objects.Background;
 import ru.stoliarenko.gb.lonelycoraptor.objects.UserInterface;
 import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.FireButton;
@@ -34,7 +33,7 @@ import ru.stoliarenko.gb.lonelycoraptor.utils.Text;
  *
  * @author Stoliarenko Alexander
  */
-public final class MainScreen2D extends BaseScreen2D {
+public final class GameScreen extends BaseScreen2D {
 
     //background
     private final Background background;
@@ -44,9 +43,9 @@ public final class MainScreen2D extends BaseScreen2D {
     //payload
     @Getter private final Corruptor player;
 
-    private ConsumableEmitter consumableEmitter;
+    @Getter private ConsumableEmitter consumableEmitter;
     @Getter private ProjectileEmitter projectileEmitter;
-    @Getter private SimpleEnemyEmitter simpleEnemyEmitter;
+    @Getter private EnemyEmitter enemyEmitter;
     @Getter private ExplosionEmitter explosionEmitter;
 
     //foreground
@@ -54,7 +53,7 @@ public final class MainScreen2D extends BaseScreen2D {
     private final Slider slider;
     private final FireButton fireButton;
 
-    public MainScreen2D(@NotNull final TestCorruptor game,  @NotNull final SpriteBatch batch) {
+    public GameScreen(@NotNull final SpaceSurvivor game, @NotNull final SpriteBatch batch) {
         super(game, batch);
         background = Assets.getInstance().getBackground();
         font = Assets.getInstance().getAssetManager().get("mainFont96.ttf");
@@ -71,7 +70,7 @@ public final class MainScreen2D extends BaseScreen2D {
 
         consumableEmitter = new ConsumableEmitter(this);
         projectileEmitter = new ProjectileEmitter(this);
-        simpleEnemyEmitter = new SimpleEnemyEmitter(this);
+        enemyEmitter = new EnemyEmitter(this);
         explosionEmitter = new ExplosionEmitter(this);
 
         ui = new UserInterface(this);
@@ -100,7 +99,7 @@ public final class MainScreen2D extends BaseScreen2D {
 
         consumableEmitter.move(dt);
         projectileEmitter.move(dt);
-        simpleEnemyEmitter.move(dt);
+        enemyEmitter.move(dt);
         explosionEmitter.move(dt);
 
         player.setAcceleration(slider.getShift());
@@ -112,7 +111,7 @@ public final class MainScreen2D extends BaseScreen2D {
 
         consumableEmitter.draw(batch);
         projectileEmitter.draw(batch);
-        simpleEnemyEmitter.draw(batch);
+        enemyEmitter.draw(batch);
         explosionEmitter.draw(batch);
 
         player.draw(batch);

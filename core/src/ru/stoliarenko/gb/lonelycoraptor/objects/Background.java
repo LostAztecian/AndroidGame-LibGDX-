@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import ru.stoliarenko.gb.lonelycoraptor.base.BackgroundObject;
+import ru.stoliarenko.gb.lonelycoraptor.objects.background_objects.BackgroundObject;
 import ru.stoliarenko.gb.lonelycoraptor.objects.background_objects.BackgroundStar;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 

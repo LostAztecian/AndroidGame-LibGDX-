@@ -2,7 +2,6 @@ package ru.stoliarenko.gb.lonelycoraptor.objects.background_objects;
 
 import com.badlogic.gdx.math.MathUtils;
 
-import ru.stoliarenko.gb.lonelycoraptor.base.BackgroundObject;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;

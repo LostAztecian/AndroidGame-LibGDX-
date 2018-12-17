@@ -1,6 +1,5 @@
 package ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 
@@ -9,9 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import lombok.Getter;
-import ru.stoliarenko.gb.lonelycoraptor.base.Ship;
 import ru.stoliarenko.gb.lonelycoraptor.objects.ShipWeapon;
-import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
+import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
@@ -37,7 +35,7 @@ public final class Corruptor extends Ship {
     private Sound chargindSound = Assets.getInstance().getAssetManager().get("sounds/charging.mp3", Sound.class);
 
 
-    public Corruptor(@NotNull final MainScreen2D gs) {
+    public Corruptor(@NotNull final GameScreen gs) {
         super(new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("corruptor"), 1f), gs);
         damaged = new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("corruptorDamaged"), 1f);
         healed = new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("corruptorHealed"), 1f);
@@ -109,7 +107,7 @@ public final class Corruptor extends Ship {
     }
 
     private void checkCollisions() {
-        final List<SimpleEnemy> enemyList = gs.getSimpleEnemyEmitter().getActiveList();
+        final List<Ship> enemyList = gs.getEnemyEmitter().getActiveList();
         for (int i = 0; i < enemyList.size(); i++) {
             if (checkCollision(enemyList.get(i))) {
                 takeDamage(10 * enemyList.get(i).getCollisionDamageMultiplier());
@@ -120,7 +118,7 @@ public final class Corruptor extends Ship {
 
     public float setWeaponCharging(boolean flag) {
         isChargingWeapon = flag;
-        if (flag) chargindSound.play(0.5f); //unsafe
+        if (flag) chargindSound.play(0.3f); //unsafe
         else chargindSound.stop();
         return 0; //TODO return total charge time
     }
@@ -137,7 +135,7 @@ public final class Corruptor extends Ship {
 
     @Override
     protected void destroy() {
-        gs.getGame().mainMenu("Game Over!");
+        gs.getGame().mainMenu("Game Over!", "Score: " + score);
     }
 
 }

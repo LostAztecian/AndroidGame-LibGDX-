@@ -1,4 +1,4 @@
-package ru.stoliarenko.gb.lonelycoraptor.base;
+package ru.stoliarenko.gb.lonelycoraptor.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -14,12 +14,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Locale;
 
 import lombok.Getter;
-import ru.stoliarenko.gb.lonelycoraptor.TestCorruptor;
+import ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 
 public abstract class BaseScreen2D implements Screen, InputProcessor {
 
-    @Getter protected final TestCorruptor game;
+    @Getter protected final SpaceSurvivor game;
     protected SpriteBatch batch;
     protected Vector2 touch = new Vector2();
     protected Matrix4 myScreenToGL = new Matrix4();
@@ -29,7 +29,7 @@ public abstract class BaseScreen2D implements Screen, InputProcessor {
 
     protected Music music;
 
-    public BaseScreen2D(@NotNull final TestCorruptor game, @NotNull final SpriteBatch batch) {
+    public BaseScreen2D(@NotNull final SpaceSurvivor game, @NotNull final SpriteBatch batch) {
         this.batch = batch;
         this.game = game;
     }

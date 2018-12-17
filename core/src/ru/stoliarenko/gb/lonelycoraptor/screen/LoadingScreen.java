@@ -7,8 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
-import ru.stoliarenko.gb.lonelycoraptor.TestCorruptor;
-import ru.stoliarenko.gb.lonelycoraptor.base.BaseScreen2D;
+import ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor;
 import ru.stoliarenko.gb.lonelycoraptor.objects.Background;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenManager;
@@ -23,7 +22,7 @@ public final class LoadingScreen extends BaseScreen2D {
     private Sprite loadingBar;
     private Vector2 loadingBarPosition;
 
-    public LoadingScreen(@NotNull final TestCorruptor game, @NotNull final SpriteBatch batch) {
+    public LoadingScreen(@NotNull final SpaceSurvivor game, @NotNull final SpriteBatch batch) {
         super(game, batch);
     }
 

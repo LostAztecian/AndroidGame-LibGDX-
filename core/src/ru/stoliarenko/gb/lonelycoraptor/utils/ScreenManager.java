@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jetbrains.annotations.NotNull;
 
 import lombok.Getter;
-import ru.stoliarenko.gb.lonelycoraptor.TestCorruptor;
-import ru.stoliarenko.gb.lonelycoraptor.base.BaseScreen2D;
+import ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor;
+import ru.stoliarenko.gb.lonelycoraptor.screen.BaseScreen2D;
 import ru.stoliarenko.gb.lonelycoraptor.screen.LoadingScreen;
-import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
+import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.screen.MenuScreen2D;
 
 public final class ScreenManager {
@@ -21,18 +21,18 @@ public final class ScreenManager {
         GAME, ANY_MENU, MAIN_MENU, PAUSE_MENU, GAME_OVER_SCREEN
     }
 
-    private TestCorruptor game;
+    private SpaceSurvivor game;
     private LoadingScreen loadingScreen;
     private BaseScreen2D targetScreen;
-    private MainScreen2D gameScreen;
+    private GameScreen gameScreen;
     private MenuScreen2D menuScreen;
 
     private SpriteBatch batch;
 
-    public void init(@NotNull final TestCorruptor game, @NotNull final SpriteBatch batch) {
+    public void init(@NotNull final SpaceSurvivor game, @NotNull final SpriteBatch batch) {
         this.game = game;
         this.batch = batch;
-        this.gameScreen = new MainScreen2D(game, batch);
+        this.gameScreen = new GameScreen(game, batch);
         this.menuScreen = new MenuScreen2D(game, batch);
         this.loadingScreen = new LoadingScreen(game, batch);
     }
@@ -52,19 +52,19 @@ public final class ScreenManager {
             case MAIN_MENU: {
                 Assets.getInstance().loadAssets(Type.ANY_MENU);
                 targetScreen = menuScreen;
-                menuScreen.setTopText("");
+                menuScreen.setPrimaryText("");
                 break;
             }
             case PAUSE_MENU: {
                 Assets.getInstance().loadAssets(Type.ANY_MENU);
                 targetScreen = menuScreen;
-                menuScreen.setTopText("Paused");
+                menuScreen.setPrimaryText("Paused");
                 break;
             }
             case GAME_OVER_SCREEN: {
                 Assets.getInstance().loadAssets(Type.ANY_MENU);
                 targetScreen = menuScreen;
-                menuScreen.setTopText("Game Over!");
+                menuScreen.setPrimaryText("Game Over!");
                 break;
             }
         }

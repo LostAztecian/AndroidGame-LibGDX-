@@ -4,15 +4,15 @@ import com.badlogic.gdx.math.MathUtils;
 
 import org.jetbrains.annotations.NotNull;
 
-import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.consumables.Consumable;
-import ru.stoliarenko.gb.lonelycoraptor.base.ObjectPool;
-import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
+import ru.stoliarenko.gb.lonelycoraptor.emitters.pool.ObjectPool;
+import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Consumable;
+import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 public final class ConsumableEmitter extends ObjectPool<Consumable> {
 
-    private final MainScreen2D gs;
+    private final GameScreen gs;
     private final Sprite[] imgs;
 
     private float coinSpawnTimer = 5;
@@ -20,7 +20,7 @@ public final class ConsumableEmitter extends ObjectPool<Consumable> {
     private float healSpawnTimer = 100;
     private float x5SpawnTimer = 100;
 
-    public ConsumableEmitter(@NotNull final MainScreen2D gs) {
+    public ConsumableEmitter(@NotNull final GameScreen gs) {
         this.gs = gs;
         imgs = new Sprite[4];
         imgs[0] = new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("coin"), 0.1f);
@@ -38,15 +38,15 @@ public final class ConsumableEmitter extends ObjectPool<Consumable> {
     @Override
     public void move(float dt) {
         super.move(dt);
-        spawnCoin(dt);
+        spawnCoin(dt, false);
         spawnStar(dt);
         spawnHeal(dt);
         spawnX5(dt);
     }
 
-    public void spawnCoin(float dt) {
+    public void spawnCoin(float dt, boolean instantly) {
         coinSpawnTimer -= dt;
-        if (coinSpawnTimer > 0) return;
+        if (!instantly && coinSpawnTimer > 0) return;
         getActiveElement().init(Consumable.Type.COIN);
         coinSpawnTimer = MathUtils.random(3f, 5f);
     }
@@ -55,7 +55,7 @@ public final class ConsumableEmitter extends ObjectPool<Consumable> {
         starSpawnTimer -= dt;
         if (starSpawnTimer > 0) return;
         getActiveElement().init(Consumable.Type.STAR);
-        starSpawnTimer = MathUtils.random(7f, 15f);
+        starSpawnTimer = MathUtils.random(60, 120);
     }
 
     public void spawnHeal(float dt) {
@@ -69,7 +69,7 @@ public final class ConsumableEmitter extends ObjectPool<Consumable> {
         x5SpawnTimer -= dt;
         if (x5SpawnTimer > 0) return;
         getActiveElement().init(Consumable.Type.X5);
-        x5SpawnTimer = MathUtils.random(50, 100);
+        x5SpawnTimer = MathUtils.random(10, 20);
     }
 
 }

@@ -68,6 +68,9 @@ public class Assets {
         assetManager.load("sounds/laserBullet.mp3", Sound.class);
         assetManager.load("sounds/charging.mp3", Sound.class);
         assetManager.load("sounds/releasing.mp3", Sound.class);
+        assetManager.load("sounds/bileExplosion.mp3", Sound.class);
+        assetManager.load("sounds/shipDestruction.mp3", Sound.class);
+        assetManager.load("sounds/consumable.mp3", Sound.class);
 
         assetManager.finishLoading();
         makeLinks();

@@ -5,14 +5,13 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
-import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Corruptor;
-import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
+import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 public final class FireButton {
 
-    private final MainScreen2D gs;
+    private final GameScreen gs;
     private final Sprite img;
     private final Sprite circle;
     private final Vector2 basePosition;
@@ -24,7 +23,7 @@ public final class FireButton {
 
     private long timer = 0;
 
-    public FireButton(@NotNull final MainScreen2D gs, @NotNull final Vector2 basePosition) {
+    public FireButton(@NotNull final GameScreen gs, @NotNull final Vector2 basePosition) {
         this.gs = gs;
         this.img = new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("slider"), 1f);
         this.circle = new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("sliderCircle"), 1f);

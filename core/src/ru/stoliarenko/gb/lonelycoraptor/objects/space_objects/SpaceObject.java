@@ -1,4 +1,4 @@
-package ru.stoliarenko.gb.lonelycoraptor.base;
+package ru.stoliarenko.gb.lonelycoraptor.objects.space_objects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -26,12 +26,12 @@ public abstract class SpaceObject {
     @Getter protected boolean visible = false;
     @Getter protected boolean active = false;
 
-    @NotNull protected Sprite img;
+    @NotNull @Getter protected Sprite img;
     protected int WIDTH;
     protected int HEIGHT;
 
     @NotNull protected Vector2 position = new Vector2();
-    @NotNull protected Vector2 velocity = new Vector2();
+    @NotNull @Getter protected Vector2 velocity = new Vector2();
     protected float angle = 0;
     protected float scale = 1.0f;
 

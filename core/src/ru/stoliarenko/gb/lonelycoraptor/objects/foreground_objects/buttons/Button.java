@@ -1,4 +1,4 @@
-package ru.stoliarenko.gb.lonelycoraptor.base;
+package ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -6,13 +6,13 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
-import ru.stoliarenko.gb.lonelycoraptor.TestCorruptor;
+import ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 public abstract class Button {
 
-    protected final TestCorruptor game;
+    protected final SpaceSurvivor game;
     private final Sprite img;
     private final Vector2 position;
 
@@ -24,7 +24,7 @@ public abstract class Button {
     private boolean isPressed = false;
     private int finger = -1;
 
-    public Button(@NotNull final TestCorruptor game, @NotNull final Sprite img, @NotNull final Vector2 position) {
+    public Button(@NotNull final SpaceSurvivor game, @NotNull final Sprite img, @NotNull final Vector2 position) {
         this.img = img;
         this.position = position;
         this.game = game;

@@ -8,12 +8,12 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import ru.stoliarenko.gb.lonelycoraptor.TestCorruptor;
-import ru.stoliarenko.gb.lonelycoraptor.base.BaseScreen2D;
-import ru.stoliarenko.gb.lonelycoraptor.base.Button;
+import ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor;
+import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.Button;
 import ru.stoliarenko.gb.lonelycoraptor.objects.Background;
 import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.ButtonNewGame;
 import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.ButtonX;
@@ -23,17 +23,18 @@ import ru.stoliarenko.gb.lonelycoraptor.utils.Text;
 
 public final class MenuScreen2D extends BaseScreen2D {
 
-    private final BitmapFont font;
+    private final BitmapFont bigFont;
+    private final BitmapFont smallFont;
     private final Background background;
     private final List<Button> buttons;
+    private final List<Text> textList;
 
-    private final Text topText;
-
-    public MenuScreen2D(@NotNull final TestCorruptor game, @NotNull final SpriteBatch batch) {
+    public MenuScreen2D(@NotNull final SpaceSurvivor game, @NotNull final SpriteBatch batch) {
         super(game, batch);
         background = Assets.getInstance().getBackground();
 
-        font = Assets.getInstance().getAssetManager().get("mainFont96.ttf");
+        bigFont = Assets.getInstance().getAssetManager().get("mainFont96.ttf");
+        smallFont = Assets.getInstance().getAssetManager().get("mainFont28.ttf");
 
         music = Assets.getInstance().getMenuMusic();
         music.setLooping(true);
@@ -43,16 +44,21 @@ public final class MenuScreen2D extends BaseScreen2D {
         buttons.add(new ButtonX(game, new Vector2(ScreenParameters.myScreen.getWidth() - 45, ScreenParameters.myScreen.getHeight() - 45)));
         buttons.add(new ButtonNewGame(game, (new Vector2(ScreenParameters.myScreen.getWidth()/2, ScreenParameters.myScreen.getHeight()/2))));
 
-        topText = new Text(font , new Vector2(ScreenParameters.myScreen.getWidth()/2, ScreenParameters.myScreen.getHeight() - 120), "");
+        textList = new ArrayList<>();
+        textList.add(new Text(bigFont, new Vector2(ScreenParameters.myScreen.getWidth()/2, ScreenParameters.myScreen.getHeight() - 120), ""));
+        textList.add(new Text(smallFont, new Vector2(ScreenParameters.myScreen.getWidth()/2, ScreenParameters.myScreen.getHeight() - 185), ""));
     }
 
-    public MenuScreen2D(@NotNull final TestCorruptor game, @NotNull final SpriteBatch batch, @NotNull final String text) {
-        this(game, batch);
-        setTopText(text);
+    public void setPrimaryText(@NotNull final String text) {
+        textList.get(0).setText(text);
     }
-
-    public void setTopText(@NotNull final String text) {
-        topText.setText(text);
+    public void setSecondaryText(@NotNull final String text) {
+        textList.get(1).setText(text);
+    }
+    public void clearText() {
+        for (int i = 0; i < textList.size(); i++) {
+            textList.get(i).setText("");
+        }
     }
 
     @Override
@@ -77,7 +83,9 @@ public final class MenuScreen2D extends BaseScreen2D {
         for (int i = 0; i < buttons.size(); i++) {
             buttons.get(i).draw(batch);
         }
-        topText.draw(batch);
+        for (int i = 0; i < textList.size(); i++) {
+            textList.get(i).draw(batch);
+        }
     }
 
     @Override

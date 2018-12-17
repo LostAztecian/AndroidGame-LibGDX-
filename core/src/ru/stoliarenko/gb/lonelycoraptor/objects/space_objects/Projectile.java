@@ -1,4 +1,4 @@
-package ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.projectiles;
+package ru.stoliarenko.gb.lonelycoraptor.objects.space_objects;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
@@ -7,12 +7,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import ru.stoliarenko.gb.lonelycoraptor.base.Explosion;
-import ru.stoliarenko.gb.lonelycoraptor.base.Poolable;
-import ru.stoliarenko.gb.lonelycoraptor.base.Ship;
-import ru.stoliarenko.gb.lonelycoraptor.base.SpaceObject;
+import ru.stoliarenko.gb.lonelycoraptor.emitters.pool.Poolable;
+import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship;
 import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy;
-import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
+import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
@@ -45,7 +43,7 @@ public class Projectile extends SpaceObject implements Poolable {
         }
     }
 
-    private final MainScreen2D gs;
+    private final GameScreen gs;
     private final Sprite[] imgs;
 
     private  Type type;
@@ -54,7 +52,7 @@ public class Projectile extends SpaceObject implements Poolable {
     protected Vector2 direction = new Vector2();
     private  Vector2 destination = new Vector2();
 
-    public Projectile(@NotNull final MainScreen2D gs, @NotNull final Sprite[] imgs){
+    public Projectile(@NotNull final GameScreen gs, @NotNull final Sprite[] imgs){
         super(SpaceObject.Type.PROJECTILE, imgs[0]);
         this.gs = gs;
         this.imgs = imgs;
@@ -70,7 +68,7 @@ public class Projectile extends SpaceObject implements Poolable {
                 destroy();
             }
         } else {
-            final List<SimpleEnemy> enemyList = gs.getSimpleEnemyEmitter().getActiveList();
+            final List<Ship> enemyList = gs.getEnemyEmitter().getActiveList();
             for (int i = 0; i < enemyList.size(); i++) {
                 if (checkCollision(enemyList.get(i))) {
                     enemyList.get(i).takeDamage(type.damage * gs.getPlayer().getDamageMultiplier()); //TODO take damage instead of destroy

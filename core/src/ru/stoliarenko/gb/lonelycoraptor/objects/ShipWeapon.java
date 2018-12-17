@@ -5,14 +5,17 @@ import com.badlogic.gdx.math.Vector2;
 import org.jetbrains.annotations.NotNull;
 
 import lombok.Setter;
-import ru.stoliarenko.gb.lonelycoraptor.base.Ship;
-import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.projectiles.Projectile;
-import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
+import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship;
+import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Projectile;
+import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 
 public class ShipWeapon {
 
     public enum Type {
         LASER_CANNON_GREEN(false, 1f, Projectile.Type.LASER_BULLET_GREEN),
+        LASER_CANNON_RED(false, 1f, Projectile.Type.LASER_BULLET_RED),
+        LASER_CANNON_BLUE(false, 1f, Projectile.Type.LASER_BULLET_BLUE),
+        LASER_CANNON_PURPLE(false, 1f, Projectile.Type.LASER_BULLET_PURPLE),
         CORROSIVE_BILE_LAUNCHER(true, 1f, Projectile.Type.CORROSIVE_BILE);
 
         private boolean isChargeable;
@@ -27,14 +30,14 @@ public class ShipWeapon {
     }
 
     private Type type;
-    protected MainScreen2D gs;
+    protected GameScreen gs;
     protected float charge = 0;
 
 
     protected long lastShotTime = 0;
     @Setter protected float fireRateScale;
 
-    public ShipWeapon(@NotNull final MainScreen2D gs, @NotNull final Type type) {
+    public ShipWeapon(@NotNull final GameScreen gs, @NotNull final Type type) {
         this.gs = gs;
         this.type = type;
         this.fireRateScale = 1f;

@@ -1,4 +1,4 @@
-package ru.stoliarenko.gb.lonelycoraptor.base;
+package ru.stoliarenko.gb.lonelycoraptor.emitters.pool;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 

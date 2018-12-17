@@ -1,12 +1,13 @@
-package ru.stoliarenko.gb.lonelycoraptor.base;
+package ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships;
 
 import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
 import lombok.Getter;
+import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.SpaceObject;
 import ru.stoliarenko.gb.lonelycoraptor.objects.ShipWeapon;
-import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
+import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 /**
@@ -26,13 +27,13 @@ public abstract class Ship extends SpaceObject {
 
     protected boolean isDamaged = false;
     protected float damagedTimer = 0;
-    protected MainScreen2D gs;
+    protected GameScreen gs;
 
     @Getter private float damageMultiplier = 1;
     @Getter private float bulletSpeedMultiplier = 1;
     @Getter private float collisionDamageMultiplier = 1;
 
-    protected Ship(@NotNull final Sprite img, @NotNull final MainScreen2D gs){
+    protected Ship(@NotNull final Sprite img, @NotNull final GameScreen gs){
         super(Type.SHIP, img);
         this.gs = gs;
     }
@@ -77,6 +78,11 @@ public abstract class Ship extends SpaceObject {
         if (hp > 0) return;
         destroy();
         gs.getPlayer().getScore(scoreBounty);
+    }
+
+    public void heal(int percent) {
+        hp += maxHp*0.01*percent;
+        if (hp > maxHp) hp = maxHp;
     }
 
     protected void chargeWeapon(float dCharge) {

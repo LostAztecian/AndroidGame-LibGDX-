@@ -5,18 +5,18 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
-import ru.stoliarenko.gb.lonelycoraptor.base.Explosion;
-import ru.stoliarenko.gb.lonelycoraptor.base.ObjectPool;
-import ru.stoliarenko.gb.lonelycoraptor.base.Ship;
-import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
+import ru.stoliarenko.gb.lonelycoraptor.emitters.pool.ObjectPool;
+import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Explosion;
+import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship;
+import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 
 public final class ExplosionEmitter extends ObjectPool<Explosion> {
 
-    private final MainScreen2D gs;
+    private final GameScreen gs;
     private final TextureRegion[] imgs;
 
-    public ExplosionEmitter(@NotNull final MainScreen2D gs) {
+    public ExplosionEmitter(@NotNull final GameScreen gs) {
         this.gs = gs;
         imgs = new TextureRegion[2];
         imgs[0] = Assets.getInstance().getExplosionsAtlas().findRegion("shipExplosion");

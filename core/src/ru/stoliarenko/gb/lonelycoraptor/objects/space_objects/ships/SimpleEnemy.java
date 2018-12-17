@@ -1,14 +1,14 @@
 package ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
-import ru.stoliarenko.gb.lonelycoraptor.base.Explosion;
-import ru.stoliarenko.gb.lonelycoraptor.base.Poolable;
-import ru.stoliarenko.gb.lonelycoraptor.base.Ship;
+import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Explosion;
+import ru.stoliarenko.gb.lonelycoraptor.emitters.pool.Poolable;
 import ru.stoliarenko.gb.lonelycoraptor.objects.ShipWeapon;
-import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
+import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
@@ -16,45 +16,70 @@ import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 public class SimpleEnemy extends Ship implements Poolable {
 
     public enum Type {
-        REGULAR(0),
-        YELLOW(1),
-        GREEN(2),
-        BLUE(3);
+        REGULAR(ShipWeapon.Type.LASER_CANNON_RED),
+        YELLOW(ShipWeapon.Type.LASER_CANNON_PURPLE),
+        GREEN(ShipWeapon.Type.LASER_CANNON_GREEN),
+        BLUE(ShipWeapon.Type.LASER_CANNON_BLUE);
 
-        private int imgIndex;
-        Type(int index) {imgIndex = index;}
+        Type(ShipWeapon.Type weapon){this.weapon = weapon;}
+        private ShipWeapon.Type weapon;
     }
 
-    private final MainScreen2D gs;
+    private final GameScreen gs;
     private final Sprite[] imgs;
     private Type type; // do i need this?
 
-    private int shootPositionX;
+    private int baseSpeen = 150;
+    private boolean eneteredScreen;
+    private float noShootTimer;
 
-    public SimpleEnemy(@NotNull final MainScreen2D gs, @NotNull final Sprite[] imgs) {
+    public SimpleEnemy(@NotNull final GameScreen gs, @NotNull final Sprite[] imgs) {
         super(imgs[0], gs);
         this.gs = gs;
         this.imgs = imgs;
         damaged = new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("simpleEnemyDamaged"), 0.3f);
     }
 
-    public void init(@NotNull final Type type) {
+    public void init(@NotNull Type type, Vector2 position, Vector2 direction) {
         this.type = type;
-        regular = imgs[type.imgIndex];
+        regular = imgs[type.ordinal()];
         setImg(regular);
 
+        this.position.set(position);
+        this.velocity.set(direction).nor().scl(baseSpeen);
+        angle = velocity.angle();
 
-        position.x = ScreenParameters.myScreen.getWidth() + img.getRightShift();
-        position.y = MathUtils.random(100, ScreenParameters.myScreen.getHeight() - 100);
-        shootPositionX = (int)(ScreenParameters.myScreen.getWidth() + img.getLeftShift()*2);
-        angle = 180;
-        velocity.x = -150;
+        weapon = new ShipWeapon(gs, type.weapon);
 
-        weapon = new ShipWeapon(gs, ShipWeapon.Type.LASER_CANNON_GREEN); //TODO weapon must be versatile
+        switch (type) {
+            case REGULAR: {
+                hp = 10;
+                scoreBounty = 15;
+                break;
+            }
+            case BLUE: {
+                weapon.setFireRateScale(1.8f);
+                scoreBounty = 40;
+                break;
+            }
+            case GREEN: {
+                velocity.scl(0.7f);
+                weapon.setFireRateScale(2);
+                hp = 15;
+                break;
+            }
+            case YELLOW: {
+                velocity.scl(1.2f);
+                weapon.setFireRateScale(0.6f);
+                scoreBounty = 60;
+                break;
+            }
+        }
 
-        hp = 10;
-        visible = true;
         active = true;
+        visible = true;
+        eneteredScreen = false;
+        noShootTimer = 1f;
     }
 
     @Override
@@ -62,10 +87,38 @@ public class SimpleEnemy extends Ship implements Poolable {
         checkDamagedTimer(dt);
         temp.set(velocity).scl(dt);
         position.add(temp);
-        temp.set(gs.getPlayer().getPosition());
+        if (!this.eneteredScreen) {
+            if (checkOuterSpace()) return;
+            else eneteredScreen = true;
+        }
         if (checkOuterSpace()) destroy();
-        if (position.x > shootPositionX) return;
-        shoot((int)temp.x + MathUtils.random(-50, +50), (int)temp.y + MathUtils.random(-50, +50));
+        if (noShootTimer > 0) {
+            noShootTimer -= dt;
+            return;
+        }
+        shoot();
+    }
+
+    private void shoot() {
+        temp.set(gs.getPlayer().getPosition());
+        switch (type) {
+            case REGULAR: {
+                shoot(temp.x - position.x, position.y);
+                break;
+            }
+            case BLUE: {
+                shoot((int)temp.x + MathUtils.random(-70, +70), (int)temp.y + MathUtils.random(-70, +70));
+                break;
+            }
+            case GREEN: {
+                shoot(position.x + velocity.x, position.y + velocity.y);
+                break;
+            }
+            case YELLOW: {
+                shoot((int)temp.x + MathUtils.random(-10, +10), (int)temp.y + MathUtils.random(-10, +10));
+                break;
+            }
+        }
     }
 
     @Override

@@ -6,15 +6,14 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
-import ru.stoliarenko.gb.lonelycoraptor.screen.MainScreen2D;
+import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
-import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenManager;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 public class UserInterface {
 
-    private final MainScreen2D gs;
+    private final GameScreen gs;
 
     private Sprite hpBorder;
     private Vector2 hpBorderPosition;
@@ -23,7 +22,7 @@ public class UserInterface {
 
     private BitmapFont font;
 
-    public UserInterface(@NotNull final MainScreen2D gs) {
+    public UserInterface(@NotNull final GameScreen gs) {
         this.gs = gs;
         hpBorder = new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("hpBorder"), 0.75f);
         hpBar = new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("hpBar"), 0.75f);
