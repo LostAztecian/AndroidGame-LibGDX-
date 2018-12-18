@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ObjectPool<T extends Poolable> {
+public abstract class ObjectPool<T extends ru.stoliarenko.gb.lonelycoraptor.emitters.pool.Poolable> {
     protected List<T> activeList;
     protected List<T> freeList;
 

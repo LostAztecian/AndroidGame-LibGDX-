@@ -8,31 +8,34 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import lombok.Getter;
+import lombok.Setter;
 import ru.stoliarenko.gb.lonelycoraptor.objects.ShipWeapon;
-import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
+import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 
 /**
  * Main ship
  */
-public final class Corruptor extends Ship {
+public final class Corruptor extends ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship {
 
     private final Sprite healed;
     private final Sprite scored;
 
     @Getter private int score = 0;
+    @Getter private int coins = 0;
 
     private Vector2 sliderAcceleration = new Vector2(0, 0);
+    @Getter @Setter
     private float acceleration = 300;
     private float speedDecay = 1f;
     private float horizontalAcceleration = 0;
     private float verticalAcceleration = 0;
 
     private boolean isChargingWeapon = false;
-    private Sound chargindSound = Assets.getInstance().getAssetManager().get("sounds/charging.mp3", Sound.class);
+    private Sound chargingSound = Assets.getInstance().getAssetManager().get("sounds/charging.mp3", Sound.class);
 
 
     public Corruptor(@NotNull final GameScreen gs) {
@@ -77,7 +80,7 @@ public final class Corruptor extends Ship {
      * Acceleration with slider or mouse
      * @param acceleration maximum length is 1f;
      */
-    public void setAcceleration(@NotNull final Vector2 acceleration) {
+    public void setSliderAcceleration(@NotNull final Vector2 acceleration) {
         sliderAcceleration.set(acceleration);
     }
 
@@ -107,7 +110,7 @@ public final class Corruptor extends Ship {
     }
 
     private void checkCollisions() {
-        final List<Ship> enemyList = gs.getEnemyEmitter().getActiveList();
+        final List<ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship> enemyList = gs.getEnemyEmitter().getActiveList();
         for (int i = 0; i < enemyList.size(); i++) {
             if (checkCollision(enemyList.get(i))) {
                 takeDamage(10 * enemyList.get(i).getCollisionDamageMultiplier());
@@ -118,8 +121,8 @@ public final class Corruptor extends Ship {
 
     public float setWeaponCharging(boolean flag) {
         isChargingWeapon = flag;
-        if (flag) chargindSound.play(0.3f); //unsafe
-        else chargindSound.stop();
+        if (flag) chargingSound.play(); //unsafe
+        else chargingSound.stop();
         return 0; //TODO return total charge time
     }
 
@@ -132,6 +135,10 @@ public final class Corruptor extends Ship {
     public void getScore(int score) {
         this.score += score; //TODO score multiplier?
     }
+    public void changeCoins(int coins) {
+        this.coins += coins;
+    }
+
 
     @Override
     protected void destroy() {

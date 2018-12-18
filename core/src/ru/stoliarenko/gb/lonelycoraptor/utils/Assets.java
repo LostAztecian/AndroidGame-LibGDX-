@@ -1,6 +1,5 @@
 package ru.stoliarenko.gb.lonelycoraptor.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -42,7 +41,7 @@ public class Assets {
 
     private Sound laserBulletSound;
 
-    public void loadAssets(ScreenManager.Type type) {
+    public void loadAssets(ru.stoliarenko.gb.lonelycoraptor.utils.ScreenManager.Type type) {
         switch (type) {
             case GAME: {
                 break;
@@ -53,6 +52,8 @@ public class Assets {
         }
         if (spaceAtlas != null) return; //only 1st loading
 
+        generateStdFont(14);
+        generateStdFont(16);
         generateStdFont(28);
         generateStdFont(32);
         generateStdFont(96);

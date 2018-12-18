@@ -7,14 +7,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import ru.stoliarenko.gb.lonelycoraptor.emitters.pool.Poolable;
-import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship;
-import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
-public class Consumable extends SpaceObject implements Poolable {
+public class Consumable extends SpaceObject implements ru.stoliarenko.gb.lonelycoraptor.emitters.pool.Poolable {
 
     public enum Type{
         COIN(),
@@ -26,11 +23,11 @@ public class Consumable extends SpaceObject implements Poolable {
         Type() { this.sound = Assets.getInstance().getAssetManager().get("sounds/consumable.mp3", Sound.class); }
     }
 
-    private final GameScreen gs;
+    private final ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen gs;
     private final Sprite[] imgs;
     private Type type;
 
-    public Consumable(@NotNull final GameScreen gs, @NotNull final Sprite[] imgs) {
+    public Consumable(@NotNull final ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen gs, @NotNull final Sprite[] imgs) {
         super(SpaceObject.Type.CONSUMABLE, imgs[0]);
         this.gs = gs;
         this.imgs = imgs;
@@ -56,6 +53,7 @@ public class Consumable extends SpaceObject implements Poolable {
         switch (type) {
             case COIN: {
                 gs.getPlayer().getScore((int)(100 * img.getScale()));
+                gs.getPlayer().changeCoins((int)(100 * img.getScale()));
                 break;
             }
             case HEAL: {
@@ -69,7 +67,7 @@ public class Consumable extends SpaceObject implements Poolable {
                 break;
             }
             case STAR: {
-                final List<Ship> enemies = gs.getEnemyEmitter().getActiveList();
+                final List<ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship> enemies = gs.getEnemyEmitter().getActiveList();
                 for (int i = 0; i < enemies.size(); i++) {
                     enemies.get(i).takeDamage(15);
                 }

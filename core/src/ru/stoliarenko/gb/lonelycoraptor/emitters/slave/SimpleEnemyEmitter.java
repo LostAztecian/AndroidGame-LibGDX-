@@ -1,30 +1,20 @@
 package ru.stoliarenko.gb.lonelycoraptor.emitters.slave;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
-import java.time.Year;
-
-import ru.stoliarenko.gb.lonelycoraptor.emitters.pool.ObjectPool;
 import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy;
-import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
-import static ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy.Type.BLUE;
-import static ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy.Type.GREEN;
-import static ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy.Type.REGULAR;
-import static ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy.Type.YELLOW;
+public final class SimpleEnemyEmitter extends ru.stoliarenko.gb.lonelycoraptor.emitters.pool.ObjectPool<SimpleEnemy> {
 
-public final class SimpleEnemyEmitter extends ObjectPool<SimpleEnemy> {
-
-    private final GameScreen gs;
+    private final ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen gs;
     private final Sprite[] imgs;
     private Vector2 tempPosition = new Vector2();
     private Vector2 tempDirection = new Vector2();
 
-    public SimpleEnemyEmitter(GameScreen gs) {
+    public SimpleEnemyEmitter(ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen gs) {
         this.gs = gs;
         imgs = new Sprite[4];
 
@@ -37,13 +27,13 @@ public final class SimpleEnemyEmitter extends ObjectPool<SimpleEnemy> {
     }
 
     @Override
-    protected SimpleEnemy newObject() {
-        return new SimpleEnemy(gs, imgs);
+    protected ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy newObject() {
+        return new ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy(gs, imgs);
     }
 
 
-    public void spawnSimple(SimpleEnemy.Type type, boolean horizontal, boolean downleft, float positionPercent, int ofsetX, int ofsetY) {
-        final SimpleEnemy enemy = getActiveElement();
+    public void spawnSimple(ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy.Type type, boolean horizontal, boolean downleft, float positionPercent, int ofsetX, int ofsetY) {
+        final ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy enemy = getActiveElement();
         if (horizontal) {
             if (downleft) {
                 tempPosition.set(ScreenParameters.myScreen.getWidth() + enemy.getImg().getRightShift() + ofsetX*enemy.getImg().getRightShift()*2, 100 + (ScreenParameters.myScreen.getHeight() - 100) * positionPercent + ofsetY*enemy.getImg().getTopShift()*2);
@@ -65,20 +55,20 @@ public final class SimpleEnemyEmitter extends ObjectPool<SimpleEnemy> {
         }
         enemy.init(type, tempPosition, tempDirection);
     }
-    public void spawnAngled(SimpleEnemy.Type type, boolean descending, int ofsetX, int ofsetY) {
-        final SimpleEnemy enemy = getActiveElement();
+    public void spawnAngled(ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy.Type type, boolean descending, int ofsetX, int ofsetY) {
+        final ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy enemy = getActiveElement();
         tempPosition.set(ScreenParameters.myScreen.getWidth()+enemy.getImg().getRightShift() + ofsetX*enemy.getImg().getRightShift()*2, descending ? ScreenParameters.myScreen.getHeight() + enemy.getImg().getTopShift() + ofsetY*enemy.getImg().getTopShift()*2 : enemy.getImg().getBottomShift() - ofsetY*enemy.getImg().getTopShift()*2);
         tempDirection.set(-1, descending ? -1 : 1);
         enemy.init(type, tempPosition, tempDirection);
     }
-    public void spawnLongAngled(SimpleEnemy.Type type, boolean descending, int ofsetX, int ofsetY) {
-        final SimpleEnemy enemy = getActiveElement();
+    public void spawnLongAngled(ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy.Type type, boolean descending, int ofsetX, int ofsetY) {
+        final ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy enemy = getActiveElement();
         tempPosition.set(ScreenParameters.myScreen.getWidth()+enemy.getImg().getRightShift() + ofsetX*enemy.getImg().getRightShift()*2, descending ? ScreenParameters.myScreen.getHeight() + enemy.getImg().getTopShift() + ofsetY*enemy.getImg().getTopShift()*2 : enemy.getImg().getBottomShift() - ofsetY*enemy.getImg().getTopShift()*2);
         tempDirection.set(-1.5f, descending ? -1 : 1);
         enemy.init(type, tempPosition, tempDirection);
     }
-    public void spawnShortAngled(SimpleEnemy.Type type, boolean descending, int ofsetX, int ofsetY) {
-        final SimpleEnemy enemy = getActiveElement();
+    public void spawnShortAngled(ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy.Type type, boolean descending, int ofsetX, int ofsetY) {
+        final ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy enemy = getActiveElement();
         tempPosition.set(ScreenParameters.myScreen.getWidth()+enemy.getImg().getRightShift() + ofsetX*enemy.getImg().getRightShift()*2, descending ? ScreenParameters.myScreen.getHeight() + enemy.getImg().getTopShift() + ofsetY*enemy.getImg().getTopShift()*2 : enemy.getImg().getBottomShift() - ofsetY*enemy.getImg().getTopShift()*2);
         tempDirection.set(-0.6f, descending ? -1 : 1);
         enemy.init(type, tempPosition, tempDirection);

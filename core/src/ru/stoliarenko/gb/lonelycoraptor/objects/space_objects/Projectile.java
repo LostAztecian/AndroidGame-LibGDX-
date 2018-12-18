@@ -8,10 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import ru.stoliarenko.gb.lonelycoraptor.emitters.pool.Poolable;
-import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship;
-import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy;
-import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
+import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship;
+import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 /**
@@ -24,18 +23,18 @@ public class Projectile extends SpaceObject implements Poolable {
         LASER_BULLET_BLUE(3, Assets.getInstance().getLaserBulletSound(), null),
         LASER_BULLET_GREEN(3, Assets.getInstance().getLaserBulletSound(), null),
         LASER_BULLET_PURPLE(3, Assets.getInstance().getLaserBulletSound(), null),
-        CORROSIVE_BILE(5, Assets.getInstance().getAssetManager().get("sounds/releasing.mp3", Sound.class), Explosion.Type.CORROSIVE_BILE, true);
+        CORROSIVE_BILE(5, Assets.getInstance().getAssetManager().get("sounds/releasing.mp3", Sound.class), ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Explosion.Type.CORROSIVE_BILE, true);
 
         private int damage;
         private Sound sound;
         private boolean isChargeable = false;
-        private Explosion.Type afterEffect;
-        Type(int damage, Sound sound, Explosion.Type aftereffect) {
+        private ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Explosion.Type afterEffect;
+        Type(int damage, Sound sound, ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Explosion.Type aftereffect) {
             this.damage = damage;
             this.sound = sound;
             this.afterEffect = aftereffect;
         }
-        Type(int damage, Sound sound, Explosion.Type aftereffect, boolean isChargeable) {
+        Type(int damage, Sound sound, ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Explosion.Type aftereffect, boolean isChargeable) {
             this.damage = damage;
             this.sound = sound;
             this.afterEffect = aftereffect;

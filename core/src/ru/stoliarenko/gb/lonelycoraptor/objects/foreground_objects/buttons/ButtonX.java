@@ -5,13 +5,12 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
-import ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 public final class ButtonX extends Button {
 
-    public ButtonX(@NotNull final SpaceSurvivor game, @NotNull final Vector2 position) {
+    public ButtonX(@NotNull final ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor game, @NotNull final Vector2 position) {
         super(game, new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("squareBrown"), 0.7f), position);
         text = "X";
     }

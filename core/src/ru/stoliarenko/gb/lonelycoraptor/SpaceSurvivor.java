@@ -31,7 +31,9 @@ public class SpaceSurvivor extends Game {
 
     @Override
     public void dispose() {
+        Assets.getInstance().clear();
         batch.dispose();
+        System.exit(0);
     }
 
     public void newGame() {
@@ -41,6 +43,7 @@ public class SpaceSurvivor extends Game {
 
     public void resumeGame() {
         setScreen(mainScreen);
+        mainScreen.resume();
     }
 
     public void mainMenu(String primaryText, String secondaryText) {

@@ -12,16 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor;
-import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.Button;
 import ru.stoliarenko.gb.lonelycoraptor.objects.Background;
-import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.ButtonNewGame;
-import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.ButtonX;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Text;
+import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.Button;
+import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.ButtonNewGame;
+import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.ButtonX;
 
-public final class MenuScreen2D extends BaseScreen2D {
+public final class MenuScreen2D extends ru.stoliarenko.gb.lonelycoraptor.screen.BaseScreen2D {
 
     private final BitmapFont bigFont;
     private final BitmapFont smallFont;
@@ -29,7 +28,7 @@ public final class MenuScreen2D extends BaseScreen2D {
     private final List<Button> buttons;
     private final List<Text> textList;
 
-    public MenuScreen2D(@NotNull final SpaceSurvivor game, @NotNull final SpriteBatch batch) {
+    public MenuScreen2D(@NotNull final ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor game, @NotNull final SpriteBatch batch) {
         super(game, batch);
         background = Assets.getInstance().getBackground();
 

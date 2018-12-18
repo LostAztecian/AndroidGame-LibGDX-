@@ -5,18 +5,15 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
-import ru.stoliarenko.gb.lonelycoraptor.emitters.pool.ObjectPool;
 import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Explosion;
-import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship;
-import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 
-public final class ExplosionEmitter extends ObjectPool<Explosion> {
+public final class ExplosionEmitter extends ru.stoliarenko.gb.lonelycoraptor.emitters.pool.ObjectPool<Explosion> {
 
-    private final GameScreen gs;
+    private final ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen gs;
     private final TextureRegion[] imgs;
 
-    public ExplosionEmitter(@NotNull final GameScreen gs) {
+    public ExplosionEmitter(@NotNull final ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen gs) {
         this.gs = gs;
         imgs = new TextureRegion[2];
         imgs[0] = Assets.getInstance().getExplosionsAtlas().findRegion("shipExplosion");
@@ -34,7 +31,7 @@ public final class ExplosionEmitter extends ObjectPool<Explosion> {
         super.move(dt);
     }
 
-    public void spawn(Explosion.Type type, Vector2 position, Ship owner) {
+    public void spawn(Explosion.Type type, Vector2 position, ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship owner) {
         getActiveElement().init(type, position, owner);
     }
 

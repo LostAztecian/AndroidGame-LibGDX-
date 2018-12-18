@@ -14,7 +14,7 @@ import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenManager;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
-public final class LoadingScreen extends BaseScreen2D {
+public final class LoadingScreen extends ru.stoliarenko.gb.lonelycoraptor.screen.BaseScreen2D {
 
     private Background background;
 

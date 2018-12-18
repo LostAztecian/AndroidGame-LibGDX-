@@ -1,9 +1,10 @@
-package ru.stoliarenko.gb.lonelycoraptor;
+package ru.stoliarenko.gb;
 
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override

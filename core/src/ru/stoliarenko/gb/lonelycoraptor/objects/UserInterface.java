@@ -24,6 +24,7 @@ public class UserInterface {
 
     public UserInterface(@NotNull final GameScreen gs) {
         this.gs = gs;
+
         hpBorder = new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("hpBorder"), 0.75f);
         hpBar = new Sprite(Assets.getInstance().getForegroundAtlas().findRegion("hpBar"), 0.75f);
         hpBorderPosition = new Vector2(10 + hpBorder.getRightShift(), ScreenParameters.myScreen.getHeight() + hpBorder.getBottomShift() - 10);

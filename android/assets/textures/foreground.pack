@@ -3,44 +3,79 @@ foreground.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-hpBorder
+upgradesPanel
   rotate: false
   xy: 2, 2
+  size: 1220, 765
+  orig: 1220, 765
+  offset: 0, 0
+  index: -1
+loadingBorder
+  rotate: false
+  xy: 2, 769
+  size: 1220, 66
+  orig: 1220, 66
+  offset: 0, 0
+  index: -1
+loadingBar
+  rotate: false
+  xy: 2, 837
+  size: 1104, 44
+  orig: 1104, 44
+  offset: 0, 0
+  index: -1
+hpBorder
+  rotate: false
+  xy: 2, 883
   size: 400, 90
   orig: 400, 90
   offset: 0, 0
   index: -1
+hpBar
+  rotate: false
+  xy: 2, 975
+  size: 299, 30
+  orig: 299, 30
+  offset: 0, 0
+  index: -1
+buttonRectangleInactive
+  rotate: false
+  xy: 404, 883
+  size: 250, 64
+  orig: 250, 64
+  offset: 0, 0
+  index: -1
 rectangleBrown
   rotate: false
-  xy: 404, 2
+  xy: 404, 949
   size: 250, 64
   orig: 250, 64
   offset: 0, 0
   index: -1
 sliderCircle
   rotate: false
-  xy: 2, 94
+  xy: 656, 883
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
 slider
   rotate: false
-  xy: 2, 196
+  xy: 758, 883
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
-hpBar
+squareButtonInactive
   rotate: false
-  xy: 656, 2
-  size: 299, 30
-  orig: 299, 30
+  xy: 860, 883
+  size: 60, 64
+  orig: 60, 64
   offset: 0, 0
   index: -1
 squareBrown
   rotate: false
-  xy: 957, 2
+  xy: 860, 949
   size: 60, 64
   orig: 60, 64
   offset: 0, 0

@@ -6,10 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jetbrains.annotations.NotNull;
 
 import lombok.Getter;
-import ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor;
-import ru.stoliarenko.gb.lonelycoraptor.screen.BaseScreen2D;
-import ru.stoliarenko.gb.lonelycoraptor.screen.LoadingScreen;
-import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.screen.MenuScreen2D;
 
 public final class ScreenManager {
@@ -21,20 +17,20 @@ public final class ScreenManager {
         GAME, ANY_MENU, MAIN_MENU, PAUSE_MENU, GAME_OVER_SCREEN
     }
 
-    private SpaceSurvivor game;
-    private LoadingScreen loadingScreen;
-    private BaseScreen2D targetScreen;
-    private GameScreen gameScreen;
+    private ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor game;
+    private ru.stoliarenko.gb.lonelycoraptor.screen.LoadingScreen loadingScreen;
+    private ru.stoliarenko.gb.lonelycoraptor.screen.BaseScreen2D targetScreen;
+    private ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen gameScreen;
     private MenuScreen2D menuScreen;
 
     private SpriteBatch batch;
 
-    public void init(@NotNull final SpaceSurvivor game, @NotNull final SpriteBatch batch) {
+    public void init(@NotNull final ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor game, @NotNull final SpriteBatch batch) {
         this.game = game;
         this.batch = batch;
-        this.gameScreen = new GameScreen(game, batch);
+        this.gameScreen = new ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen(game, batch);
         this.menuScreen = new MenuScreen2D(game, batch);
-        this.loadingScreen = new LoadingScreen(game, batch);
+        this.loadingScreen = new ru.stoliarenko.gb.lonelycoraptor.screen.LoadingScreen(game, batch);
     }
 
     public void changeScreen(Type type) {

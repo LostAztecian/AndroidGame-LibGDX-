@@ -5,12 +5,11 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
+import ru.stoliarenko.gb.lonelycoraptor.objects.ShipWeapon;
 import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Explosion;
 import ru.stoliarenko.gb.lonelycoraptor.emitters.pool.Poolable;
-import ru.stoliarenko.gb.lonelycoraptor.objects.ShipWeapon;
 import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
-import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 public class SimpleEnemy extends Ship implements Poolable {
@@ -76,6 +75,9 @@ public class SimpleEnemy extends Ship implements Poolable {
             }
         }
 
+        setDamageMultiplier(1 + gs.getPlayer().getScore() / 2000);
+        setCollisionDamageMultiplier(1 + gs.getPlayer().getScore() / 4000);
+        hp *= 1+gs.getPlayer().getScore()/5000;
         active = true;
         visible = true;
         eneteredScreen = false;

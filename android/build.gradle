@@ -17,19 +17,12 @@ android {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
     defaultConfig {
-        applicationId "ru.stoliarenko.gb.lonelycoraptor"
+        applicationId "ru.stoliarenko.gb"
         minSdkVersion 20
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
-
-    compileOptions{
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    
     buildTypes {
         release {
             minifyEnabled false
@@ -93,7 +86,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'ru.stoliarenko.gb.lonelycoraptor/ru.stoliarenko.gb.lonelycoraptor.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'ru.stoliarenko.gb.AndroidLauncher'
 }
 
 // sets up the Android Eclipse project, using the old Ant based build.

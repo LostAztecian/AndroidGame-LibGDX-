@@ -10,19 +10,17 @@ import com.badlogic.gdx.math.Vector2;
 import org.jetbrains.annotations.NotNull;
 
 import lombok.Getter;
-import ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor;
-import ru.stoliarenko.gb.lonelycoraptor.emitters.ConsumableEmitter;
-import ru.stoliarenko.gb.lonelycoraptor.emitters.EnemyEmitter;
-import ru.stoliarenko.gb.lonelycoraptor.emitters.ExplosionEmitter;
-import ru.stoliarenko.gb.lonelycoraptor.emitters.ProjectileEmitter;
 import ru.stoliarenko.gb.lonelycoraptor.objects.Background;
-import ru.stoliarenko.gb.lonelycoraptor.objects.UserInterface;
-import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.FireButton;
 import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.sliders.Slider;
 import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Corruptor;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Text;
+import ru.stoliarenko.gb.lonelycoraptor.emitters.ConsumableEmitter;
+import ru.stoliarenko.gb.lonelycoraptor.emitters.EnemyEmitter;
+import ru.stoliarenko.gb.lonelycoraptor.emitters.ExplosionEmitter;
+import ru.stoliarenko.gb.lonelycoraptor.emitters.ProjectileEmitter;
+import ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.FireButton;
 
 /**
  * Game main screen
@@ -33,7 +31,7 @@ import ru.stoliarenko.gb.lonelycoraptor.utils.Text;
  *
  * @author Stoliarenko Alexander
  */
-public final class GameScreen extends BaseScreen2D {
+public final class GameScreen extends ru.stoliarenko.gb.lonelycoraptor.screen.BaseScreen2D {
 
     //background
     private final Background background;
@@ -49,11 +47,17 @@ public final class GameScreen extends BaseScreen2D {
     @Getter private ExplosionEmitter explosionEmitter;
 
     //foreground
-    private UserInterface ui;
+    private ru.stoliarenko.gb.lonelycoraptor.objects.UserInterface ui;
     private final Slider slider;
     private final FireButton fireButton;
 
-    public GameScreen(@NotNull final SpaceSurvivor game, @NotNull final SpriteBatch batch) {
+    private final UpgradesScreen upgradesScreen;
+    private final ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.upgrades.ButtonUpgradesPanel buttonUpgradesPanel;
+    private final Vector2 buttonUpgradesPanelPosition;
+    private final StringBuilder stringBuilder;
+    private final Text moneyText;
+
+    public GameScreen(@NotNull final ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor game, @NotNull final SpriteBatch batch) {
         super(game, batch);
         background = Assets.getInstance().getBackground();
         font = Assets.getInstance().getAssetManager().get("mainFont96.ttf");
@@ -73,7 +77,14 @@ public final class GameScreen extends BaseScreen2D {
         enemyEmitter = new EnemyEmitter(this);
         explosionEmitter = new ExplosionEmitter(this);
 
-        ui = new UserInterface(this);
+        ui = new ru.stoliarenko.gb.lonelycoraptor.objects.UserInterface(this);
+
+        upgradesScreen = new UpgradesScreen(game, this, batch);
+        buttonUpgradesPanelPosition = new Vector2(ScreenParameters.myScreen.getWidth()/2, ScreenParameters.myScreen.getHeight() - 30);
+        buttonUpgradesPanel = new ru.stoliarenko.gb.lonelycoraptor.objects.foreground_objects.buttons.upgrades.ButtonUpgradesPanel(game, buttonUpgradesPanelPosition, upgradesScreen);
+        stringBuilder = new StringBuilder("Coins: 0");
+        moneyText = new Text(Assets.getInstance().getAssetManager().get("mainFont16.ttf"), new Vector2(buttonUpgradesPanelPosition.x, buttonUpgradesPanelPosition.y - 30), stringBuilder.toString());
+
     }
 
     @Override
@@ -102,8 +113,12 @@ public final class GameScreen extends BaseScreen2D {
         enemyEmitter.move(dt);
         explosionEmitter.move(dt);
 
-        player.setAcceleration(slider.getShift());
+        player.setSliderAcceleration(slider.getShift());
         player.move(dt);
+
+        stringBuilder.setLength(7);
+        stringBuilder.append(player.getCoins());
+        moneyText.setText(stringBuilder.toString());
     }
 
     private void drawAll() {
@@ -118,6 +133,8 @@ public final class GameScreen extends BaseScreen2D {
 
         slider.draw(batch);
         fireButton.draw(batch);
+        buttonUpgradesPanel.draw(batch);
+        moneyText.draw(batch);
         ui.draw(batch);
 
         if (isPaused) topText.draw(batch);
@@ -145,6 +162,10 @@ public final class GameScreen extends BaseScreen2D {
             fireButton.press(pointer);
             return true;
         }
+        if (buttonUpgradesPanel.isInside(x, y)) {
+            buttonUpgradesPanel.press(pointer);
+            return true;
+        }
 
         return false;
     }
@@ -157,6 +178,7 @@ public final class GameScreen extends BaseScreen2D {
         float y = ScreenParameters.myScreen.getHeight() - touch.y;
         slider.release(pointer);
         fireButton.release(pointer);
+        buttonUpgradesPanel.release(x, y, pointer);
         return false;
     }
 

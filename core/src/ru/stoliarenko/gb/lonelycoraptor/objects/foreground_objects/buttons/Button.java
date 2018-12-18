@@ -6,13 +6,12 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
-import ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
 public abstract class Button {
 
-    protected final SpaceSurvivor game;
+    protected final ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor game;
     private final Sprite img;
     private final Vector2 position;
 
@@ -24,7 +23,7 @@ public abstract class Button {
     private boolean isPressed = false;
     private int finger = -1;
 
-    public Button(@NotNull final SpaceSurvivor game, @NotNull final Sprite img, @NotNull final Vector2 position) {
+    public Button(@NotNull final ru.stoliarenko.gb.lonelycoraptor.SpaceSurvivor game, @NotNull final Sprite img, @NotNull final Vector2 position) {
         this.img = img;
         this.position = position;
         this.game = game;
@@ -43,9 +42,13 @@ public abstract class Button {
         } else font.draw(batch, text, position.x - (font.getScaleX() * font.getCapHeight() * text.length()) / 2, position.y + font.getCapHeight() / 2);
     }
 
-    protected void setFonts(@NotNull final BitmapFont font, @NotNull final BitmapFont pressedFont) {
+    public void setFonts(@NotNull final BitmapFont font, @NotNull final BitmapFont pressedFont) {
         this.font = font;
         this.pressedFont = pressedFont;
+    }
+
+    public void setSizeScale(float scale) {
+        img.setScale(scale);
     }
 
     public boolean isInside(float posX, float posY) {

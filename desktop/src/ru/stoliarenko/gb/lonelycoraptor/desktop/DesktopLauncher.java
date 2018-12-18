@@ -9,7 +9,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 720;
-		config.height = 405;
+		config.height = 403;
 		config.resizable = false;
 		new LwjglApplication(new SpaceSurvivor(), config);
 	}

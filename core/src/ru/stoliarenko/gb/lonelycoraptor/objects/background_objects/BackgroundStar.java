@@ -6,7 +6,7 @@ import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.ScreenParameters;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 
-public final class BackgroundStar extends BackgroundObject {
+public final class BackgroundStar extends ru.stoliarenko.gb.lonelycoraptor.objects.background_objects.BackgroundObject {
 
     public BackgroundStar() {
         super(new Sprite(Assets.getInstance().getBackgroundAtlas().findRegion("backgroundStar"), 0.35f));

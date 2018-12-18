@@ -57,9 +57,9 @@ public class ShipWeapon {
     }
 
     public void charge(float dCharge) {
-        float before = charge;
+//        float before = charge;
         if (type.isChargeable) charge += dCharge * type.baseFirerate* fireRateScale;
-        float after = charge;
-        if (type.isChargeable) System.out.printf("Charging %f --> %f%n", before, after);
+//        float after = charge;
+//        if (type.isChargeable) System.out.printf("Charging %f --> %f%n", before, after);
     }
 }

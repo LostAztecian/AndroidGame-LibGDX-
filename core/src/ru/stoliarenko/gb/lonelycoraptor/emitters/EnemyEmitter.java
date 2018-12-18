@@ -7,27 +7,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
-import ru.stoliarenko.gb.lonelycoraptor.emitters.slave.SimpleEnemyEmitter;
-import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship;
 import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.SimpleEnemy;
-import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 
 public final class EnemyEmitter {
 
-    private GameScreen gs;
-    @Getter private SimpleEnemyEmitter simpleEnemies;
+    private ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen gs;
+    @Getter private ru.stoliarenko.gb.lonelycoraptor.emitters.slave.SimpleEnemyEmitter simpleEnemies;
 
-    private List<Ship> activeList;
+    private List<ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship> activeList;
 
     private float nextWaveTimer = 0;
 
-    public EnemyEmitter(GameScreen gs) {
+    public EnemyEmitter(ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen gs) {
         this.gs = gs;
         this.activeList = new ArrayList<>();
-        this.simpleEnemies = new SimpleEnemyEmitter(gs);
+        this.simpleEnemies = new ru.stoliarenko.gb.lonelycoraptor.emitters.slave.SimpleEnemyEmitter(gs);
     }
 
-    public List<Ship> getActiveList() {
+    public List<ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship> getActiveList() {
         activeList.clear();
         for (int i = 0; i < simpleEnemies.getActiveList().size(); i++) {
             activeList.add(simpleEnemies.getActiveList().get(i));

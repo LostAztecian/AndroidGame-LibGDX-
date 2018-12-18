@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import org.jetbrains.annotations.NotNull;
 
 import lombok.Getter;
-import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.SpaceObject;
+import lombok.Setter;
 import ru.stoliarenko.gb.lonelycoraptor.objects.ShipWeapon;
 import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
@@ -13,25 +13,26 @@ import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
 /**
  * Space objects that may have weapons
  */
-public abstract class Ship extends SpaceObject {
+public abstract class Ship extends ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.SpaceObject {
 
     @NotNull protected ShipWeapon weapon;
 
     protected Sprite regular;
     protected Sprite damaged;
+    @Getter @Setter
     protected float ROTATION = 200;
 
     @Getter protected int hp = 100;
-    @Getter protected int maxHp = 100;
+    @Getter @Setter protected int maxHp = 100;
     protected int scoreBounty = 10;
 
     protected boolean isDamaged = false;
     protected float damagedTimer = 0;
     protected GameScreen gs;
 
-    @Getter private float damageMultiplier = 1;
-    @Getter private float bulletSpeedMultiplier = 1;
-    @Getter private float collisionDamageMultiplier = 1;
+    @Getter @Setter private float damageMultiplier = 1;
+    @Getter @Setter private float bulletSpeedMultiplier = 1;
+    @Getter @Setter private float collisionDamageMultiplier = 1;
 
     protected Ship(@NotNull final Sprite img, @NotNull final GameScreen gs){
         super(Type.SHIP, img);

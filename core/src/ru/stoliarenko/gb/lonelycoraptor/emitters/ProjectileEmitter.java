@@ -4,20 +4,17 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
-import ru.stoliarenko.gb.lonelycoraptor.emitters.pool.ObjectPool;
-import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship;
-import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Projectile;
-import ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Assets;
 import ru.stoliarenko.gb.lonelycoraptor.utils.Sprite;
+import ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Projectile;
 
-public final class ProjectileEmitter extends ObjectPool<Projectile> {
+public final class ProjectileEmitter extends ru.stoliarenko.gb.lonelycoraptor.emitters.pool.ObjectPool<Projectile> {
 
-    private final GameScreen gs;
+    private final ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen gs;
     private final Sprite[] imgs;
 
 
-    public ProjectileEmitter(@NotNull final GameScreen gs) {
+    public ProjectileEmitter(@NotNull final ru.stoliarenko.gb.lonelycoraptor.screen.GameScreen gs) {
         this.gs = gs;
         imgs = new Sprite[5];
         imgs[0] = new Sprite(Assets.getInstance().getSpaceAtlas().findRegion("laserBulletRed"), 0.15f);
@@ -29,8 +26,8 @@ public final class ProjectileEmitter extends ObjectPool<Projectile> {
     }
 
     @Override
-    protected Projectile newObject() {
-        return new Projectile(gs, imgs);
+    protected ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Projectile newObject() {
+        return new ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Projectile(gs, imgs);
     }
 
     @Override
@@ -38,21 +35,21 @@ public final class ProjectileEmitter extends ObjectPool<Projectile> {
         super.move(dt);
     }
 
-    public void spawn(@NotNull final Projectile.Type type, @NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition, Ship owner) {
+    public void spawn(@NotNull final ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Projectile.Type type, @NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition, ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship owner) {
         getActiveElement().init(type, currentPosition, destinationPosition, owner);
     }
 
-    public void spawnLaserBulletRed(@NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition, Ship owner) {
-        getActiveElement().init(Projectile.Type.LASER_BULLET_RED, currentPosition, destinationPosition, owner);
+    public void spawnLaserBulletRed(@NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition, ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship owner) {
+        getActiveElement().init(ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Projectile.Type.LASER_BULLET_RED, currentPosition, destinationPosition, owner);
     }
-    public void spawnLaserBulletBlue(@NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition, Ship owner) {
-        getActiveElement().init(Projectile.Type.LASER_BULLET_BLUE, currentPosition, destinationPosition, owner);
+    public void spawnLaserBulletBlue(@NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition, ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship owner) {
+        getActiveElement().init(ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Projectile.Type.LASER_BULLET_BLUE, currentPosition, destinationPosition, owner);
     }
-    public void spawnLaserBulletGreen(@NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition, Ship owner) {
-        getActiveElement().init(Projectile.Type.LASER_BULLET_GREEN, currentPosition, destinationPosition, owner);
+    public void spawnLaserBulletGreen(@NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition, ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship owner) {
+        getActiveElement().init(ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Projectile.Type.LASER_BULLET_GREEN, currentPosition, destinationPosition, owner);
     }
-    public void spawnLaserBulletPurple(@NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition, Ship owner) {
-        getActiveElement().init(Projectile.Type.LASER_BULLET_PURPLE, currentPosition, destinationPosition, owner);
+    public void spawnLaserBulletPurple(@NotNull Vector2 currentPosition, @NotNull Vector2 destinationPosition, ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.ships.Ship owner) {
+        getActiveElement().init(ru.stoliarenko.gb.lonelycoraptor.objects.space_objects.Projectile.Type.LASER_BULLET_PURPLE, currentPosition, destinationPosition, owner);
     }
 
 }
